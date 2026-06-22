@@ -4,6 +4,7 @@ import DateSelect from './pages/DateSelect'
 import FlexibleDate from './pages/FlexibleDate'
 import Compare from './pages/Compare'
 import DepartureFlight from './pages/DepartureFlight'
+import DepartureTrainBus from './pages/DepartureTrainBus'
 import ReturnFlight from './pages/ReturnFlight'
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
           <Route path="/flexible" element={<FlexibleDate />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/departure" element={<DepartureFlight />} />
+          <Route path="/departure-train" element={<DepartureTrainBus />} />
+          <Route path="/departure-bus" element={<DepartureTrainBus />} />
           <Route path="/return" element={<ReturnFlight />} />
         </Routes>
       </div>

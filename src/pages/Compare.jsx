@@ -6,12 +6,11 @@ const imgBack = "/assets/5a5b516c-4ac1-4df0-bebc-b3359bd73b61.png"
 const imgShare = "/assets/904fbc4c-986a-41d6-9ddb-46d3853b94b0.png"
 const imgArrow = "/assets/550185c4-b488-40d9-8da0-059fa59c621e.png"
 const imgChevFwd = "/assets/2634baac-2486-4731-9630-64491c9b06d6.png"
-const imgChevFwd2 = "/assets/941fea48-c848-4734-bfc6-d48d950adaaf.png"
 
 const DATES = [
   { day: '토', date: 13, price: 110, highlight: 'expensive' },
   { day: '일', date: 14, price: 118, highlight: 'expensive' },
-  { day: '월', date: 15, price: 79, selected: true },
+  { day: '월', date: 15, price: 79 },
   { day: '화', date: 16, price: 98, highlight: 'cheap' },
   { day: '수', date: 17, price: 94, highlight: 'cheap' },
   { day: '목', date: 18, price: 89, highlight: 'cheap' },
@@ -23,14 +22,47 @@ const DATES = [
 ]
 
 const TRANSPORTS = [
-  { name: '항공', duration: '1h 50m', price: '₩79,000', count: '12편', badge: '가장 저렴', badgeColor: 'bg-[#eff6ff] text-[#006eb5]', selected: true },
-  { name: '기차', duration: '6h 25m', price: '₩103,000', count: '8편', badge: null, selected: false },
-  { name: '버스', duration: '14h 50m', price: '₩45,000', count: '6편', badge: '가장 저렴', badgeColor: 'bg-[#e6f5e8] text-[#008026]', selected: false },
+  {
+    id: 'flight',
+    name: '항공',
+    duration: '1h 50m',
+    price: '₩79,000',
+    count: '12편',
+    badge: '가장 저렴',
+    badgeColor: 'bg-[#eff6ff] text-[#006eb5]',
+    route: '/departure',
+  },
+  {
+    id: 'train',
+    name: '기차',
+    duration: '6h 25m',
+    price: '₩103,000',
+    count: '8편',
+    badge: '가장 빠름',
+    badgeColor: 'bg-[#e6f5e8] text-[#008026]',
+    route: '/departure-train',
+  },
+  {
+    id: 'bus',
+    name: '버스',
+    duration: '14h 50m',
+    price: '₩45,000',
+    count: '6편',
+    badge: '가장 저렴',
+    badgeColor: 'bg-[#e6f5e8] text-[#008026]',
+    route: '/departure-bus',
+  },
 ]
 
 export default function Compare() {
   const navigate = useNavigate()
   const [selectedDate, setSelectedDate] = useState(15)
+  const [selectedTransport, setSelectedTransport] = useState(null)
+
+  const handleTransportClick = (t) => {
+    setSelectedTransport(t.id)
+    navigate(t.route)
+  }
 
   return (
     <div className="relative w-full min-h-svh bg-white">
@@ -79,7 +111,8 @@ export default function Compare() {
                     key={d.date}
                     onClick={() => setSelectedDate(d.date)}
                     className={`size-[48px] flex flex-col items-center justify-center rounded-[8px] border-2 flex-shrink-0
-                      ${d.date === selectedDate ? 'bg-[#132968] border-[#132968]'
+                      ${d.date === selectedDate
+                        ? 'bg-[#132968] border-[#132968]'
                         : d.highlight === 'expensive' ? 'border-[#fd3235]'
                         : d.highlight === 'cheap' ? 'border-[#008026]'
                         : 'border-[#e5e7ee]'}`}
@@ -102,10 +135,10 @@ export default function Compare() {
           <div className="flex flex-col gap-[24px]">
             {TRANSPORTS.map((t) => (
               <button
-                key={t.name}
-                onClick={() => t.name === '항공' && navigate('/departure')}
-                className={`bg-white border-2 rounded-[8px] px-[20px] py-[12px] flex items-center justify-between w-full
-                  ${t.selected ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}
+                key={t.id}
+                onClick={() => handleTransportClick(t)}
+                className={`bg-white border-2 rounded-[8px] px-[20px] py-[12px] flex items-center justify-between w-full transition-colors
+                  ${selectedTransport === t.id ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}
               >
                 <div className="flex flex-col gap-[12px] flex-1">
                   <div className="flex items-center gap-[12px]">
@@ -139,8 +172,16 @@ export default function Compare() {
 
         <div className="flex flex-col gap-[10px]">
           <p className="text-[#afb8c5] text-[12px]">카드 탭 → 전체 편 리스트로 이동</p>
-          <button className="bg-[#ccc] h-[48px] rounded-[8px] flex items-center justify-center w-full">
-            <span className="text-white text-[14px] font-medium">출발 수단을 선택해주세요</span>
+          <button
+            onClick={() => selectedTransport && navigate(TRANSPORTS.find(t => t.id === selectedTransport)?.route)}
+            className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors
+              ${selectedTransport ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}
+          >
+            <span className="text-white text-[14px] font-medium">
+              {selectedTransport
+                ? `${TRANSPORTS.find(t => t.id === selectedTransport)?.name} 편 보기`
+                : '출발 수단을 선택해주세요'}
+            </span>
           </button>
         </div>
       </div>
