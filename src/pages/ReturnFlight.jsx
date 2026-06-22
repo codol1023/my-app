@@ -14,26 +14,51 @@ const RETURN_DATES = [
   { day: '금', date: 26, price: 168, expensive: true },
   { day: '토', date: 27, price: 180, expensive: true },
   { day: '일', date: 28, price: 182, expensive: true },
-  { day: '월', date: 29, price: 110, selected: true },
+  { day: '월', date: 29, price: 110 },
   { day: '화', date: 30, price: 105 },
-  { day: '수', date: 1, price: 107 },
-  { day: '목', date: 2, price: 105 },
-  { day: '금', date: 3, price: 172, expensive: true },
-  { day: '토', date: 4, price: 168, expensive: true },
+  { day: '수', date: 1,  price: 107 },
+  { day: '목', date: 2,  price: 105 },
+  { day: '금', date: 3,  price: 172, expensive: true },
+  { day: '토', date: 4,  price: 168, expensive: true },
 ]
 
-const RETURN_OPTIONS = [
-  { type: '항공', duration: '1h 50m · 직항', price: 103000, count: '9편', badge: '가장 저렴', badgeColor: 'bg-[#e6f5e8] text-[#008026]', selected: true },
-  { type: '기차', duration: '6h 25m', price: 98000, count: '6편', badge: null, selected: false },
-]
+// 날짜별 리턴 교통편 데이터
+const RETURN_BY_DATE = {
+  25: { flight: { price: 162000, count: '7편',  duration: '1h 50m · 직항' }, train: { price: 195000, count: '5편', duration: '6h 25m' }, bus: { price: 88000, count: '3편', duration: '14h 50m' } },
+  26: { flight: { price: 168000, count: '8편',  duration: '1h 50m · 직항' }, train: { price: 202000, count: '5편', duration: '6h 25m' }, bus: { price: 92000, count: '3편', duration: '14h 50m' } },
+  27: { flight: { price: 180000, count: '6편',  duration: '1h 50m · 직항' }, train: { price: 215000, count: '4편', duration: '6h 25m' }, bus: { price: 99000, count: '3편', duration: '14h 50m' } },
+  28: { flight: { price: 182000, count: '6편',  duration: '1h 50m · 직항' }, train: { price: 218000, count: '4편', duration: '6h 25m' }, bus: { price: 102000, count: '3편', duration: '14h 50m' } },
+  29: { flight: { price: 103000, count: '9편',  duration: '1h 50m · 직항' }, train: { price: 98000,  count: '6편', duration: '6h 25m' }, bus: { price: 52000,  count: '5편', duration: '14h 50m' } },
+  30: { flight: { price: 98000,  count: '10편', duration: '1h 50m · 직항' }, train: { price: 92000,  count: '7편', duration: '6h 25m' }, bus: { price: 48000,  count: '5편', duration: '14h 50m' } },
+  1:  { flight: { price: 107000, count: '9편',  duration: '1h 50m · 직항' }, train: { price: 101000, count: '6편', duration: '6h 25m' }, bus: { price: 55000,  count: '5편', duration: '14h 50m' } },
+  2:  { flight: { price: 105000, count: '9편',  duration: '1h 50m · 직항' }, train: { price: 99000,  count: '6편', duration: '6h 25m' }, bus: { price: 53000,  count: '5편', duration: '14h 50m' } },
+  3:  { flight: { price: 172000, count: '7편',  duration: '1h 50m · 직항' }, train: { price: 205000, count: '4편', duration: '6h 25m' }, bus: { price: 95000,  count: '3편', duration: '14h 50m' } },
+  4:  { flight: { price: 168000, count: '8편',  duration: '1h 50m · 직항' }, train: { price: 198000, count: '5편', duration: '6h 25m' }, bus: { price: 90000,  count: '3편', duration: '14h 50m' } },
+}
+
+function getCheapestType(data) {
+  const prices = { flight: data.flight.price, train: data.train.price, bus: data.bus.price }
+  return Object.entries(prices).reduce((a, b) => a[1] < b[1] ? a : b)[0]
+}
+
+const DEPARTURE_PRICE = 79000
 
 export default function ReturnFlight() {
   const navigate = useNavigate()
   const [selectedDate, setSelectedDate] = useState(29)
-  const [selectedOption, setSelectedOption] = useState(0)
-  const [done, setDone] = useState(false)
+  const [selectedOption, setSelectedOption] = useState(null)
 
-  const totalPrice = 79000 + RETURN_OPTIONS[selectedOption].price
+  const data = RETURN_BY_DATE[selectedDate]
+  const cheapest = getCheapestType(data)
+
+  const OPTIONS = [
+    { id: 'flight', type: '항공', ...data.flight },
+    { id: 'train',  type: '기차', ...data.train  },
+    { id: 'bus',    type: '버스', ...data.bus     },
+  ]
+
+  const selectedPrice = selectedOption !== null ? OPTIONS[selectedOption].price : null
+  const totalPrice = DEPARTURE_PRICE + (selectedPrice ?? 0)
 
   return (
     <div className="relative w-full min-h-svh bg-white">
@@ -94,6 +119,7 @@ export default function ReturnFlight() {
           </div>
 
           <div className="bg-white px-[12px] py-[20px] flex flex-col gap-[20px]">
+            {/* 날짜 스크롤 */}
             <div className="flex flex-col gap-[8px]">
               <span className="text-[#6b7281] text-[10px]">리턴 날짜 (6/15 이후)</span>
               <div className="overflow-x-auto">
@@ -101,7 +127,7 @@ export default function ReturnFlight() {
                   {RETURN_DATES.map((d) => (
                     <button
                       key={`${d.day}-${d.date}`}
-                      onClick={() => setSelectedDate(d.date)}
+                      onClick={() => { setSelectedDate(d.date); setSelectedOption(null) }}
                       className={`size-[48px] flex flex-col items-center justify-center rounded-[8px] border-2 flex-shrink-0
                         ${d.date === selectedDate ? 'bg-[#132968] border-[#132968]'
                           : d.expensive ? 'border-[#fd3235]'
@@ -118,63 +144,79 @@ export default function ReturnFlight() {
               </div>
             </div>
 
+            {/* 교통편 카드 */}
             <div className="flex flex-col gap-[12px]">
-              {RETURN_OPTIONS.map((opt, idx) => (
-                <button
-                  key={opt.type}
-                  onClick={() => setSelectedOption(idx)}
-                  className={`bg-white border-2 rounded-[8px] py-[18px] px-[20px] flex flex-col gap-[12px] w-full
-                    ${selectedOption === idx ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}
-                >
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center gap-[12px]">
-                      <span className="text-[16px] font-semibold text-black">{opt.type}</span>
-                      {opt.badge && (
-                        <div className={`h-[20px] px-[12px] rounded-[4px] flex items-center ${opt.badgeColor}`}>
-                          <span className="text-[10px] font-semibold">{opt.badge}</span>
-                        </div>
-                      )}
+              {OPTIONS.map((opt, idx) => {
+                const isCheapest = opt.id === cheapest
+                return (
+                  <button
+                    key={opt.id}
+                    onClick={() => setSelectedOption(idx)}
+                    className={`bg-white border-2 rounded-[8px] py-[18px] px-[20px] flex flex-col gap-[12px] w-full transition-colors
+                      ${selectedOption === idx ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-[12px]">
+                        <span className="text-[16px] font-semibold text-black">{opt.type}</span>
+                        {isCheapest && (
+                          <div className="h-[20px] px-[12px] rounded-[4px] flex items-center bg-[#e6f5e8]">
+                            <span className="text-[10px] font-semibold text-[#008026]">가장 저렴</span>
+                          </div>
+                        )}
+                      </div>
+                      <span className="text-[#ff5553] text-[16px] font-semibold">₩{opt.price.toLocaleString()}</span>
                     </div>
-                    <span className="text-[#ff5553] text-[16px] font-semibold">₩{opt.price.toLocaleString()}</span>
-                  </div>
-                  <div className="flex items-center justify-between w-full">
-                    <span className="text-[#7d8391] text-[14px] font-semibold">{opt.duration}</span>
-                    <div className="flex items-center gap-[4px]">
-                      <span className="text-[#132968] text-[14px] font-semibold">{opt.count}</span>
-                      <img src={imgChevFwd} className="size-[20px]" alt="" />
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-[#7d8391] text-[14px] font-semibold">{opt.duration}</span>
+                      <div className="flex items-center gap-[4px]">
+                        <span className="text-[#132968] text-[14px] font-semibold">{opt.count}</span>
+                        <img src={imgChevFwd} className="size-[20px]" alt="" />
+                      </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                )
+              })}
             </div>
           </div>
         </div>
 
+        {/* 합계 박스 */}
         <div className="bg-white border-2 border-[#f1f2f6] rounded-[8px] py-[12px] flex flex-col gap-[16px]">
           <div className="flex flex-col gap-[10px] px-[20px] text-[14px] font-normal">
             <div className="flex items-center justify-between">
               <span className="text-[#7d8391]">출발 · 6/15 항공</span>
-              <span className="text-[#132968]">₩79,000</span>
+              <span className="text-[#132968]">₩{DEPARTURE_PRICE.toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[#7d8391]">리턴 · 6/{selectedDate} 항공</span>
-              <span className="text-[#132968]">₩{RETURN_OPTIONS[selectedOption].price.toLocaleString()}</span>
+              <span className="text-[#7d8391]">
+                리턴 · 6/{selectedDate} {selectedOption !== null ? OPTIONS[selectedOption].type : '—'}
+              </span>
+              <span className="text-[#132968]">
+                {selectedOption !== null ? `₩${selectedPrice.toLocaleString()}` : '—'}
+              </span>
             </div>
           </div>
           <div className="h-[1px] bg-[#f1f2f6] mx-[20px]" />
           <div className="flex items-center justify-between px-[20px]">
             <span className="text-[#132968] text-[16px] font-semibold">왕복 합계</span>
-            <span className="text-[#132968] text-[20px] font-semibold">₩{totalPrice.toLocaleString()}</span>
+            <span className="text-[#132968] text-[20px] font-semibold">
+              {selectedOption !== null ? `₩${totalPrice.toLocaleString()}` : '—'}
+            </span>
           </div>
         </div>
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 px-[16px] pb-[16px] pt-[8px] bg-white">
         <button
-          onClick={() => alert('예약이 완료되었습니다! 🎉')}
-          className="bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full"
+          onClick={() => selectedOption !== null && alert('예약이 완료되었습니다! 🎉')}
+          className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors
+            ${selectedOption !== null ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}
         >
-          <span className="text-white text-[14px] font-medium">왕복 ₩{totalPrice.toLocaleString()} · 결제하기</span>
+          <span className="text-white text-[14px] font-medium">
+            {selectedOption !== null
+              ? `왕복 ₩${totalPrice.toLocaleString()} · 결제하기`
+              : '리턴편을 선택해주세요'}
+          </span>
         </button>
       </div>
     </div>

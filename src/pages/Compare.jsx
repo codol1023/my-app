@@ -10,10 +10,10 @@ const imgChevFwd = "/assets/2634baac-2486-4731-9630-64491c9b06d6.png"
 const DATES = [
   { day: '토', date: 13, price: 110, highlight: 'expensive' },
   { day: '일', date: 14, price: 118, highlight: 'expensive' },
-  { day: '월', date: 15, price: 79, highlight: 'cheap' },
-  { day: '화', date: 16, price: 98, highlight: 'cheap' },
-  { day: '수', date: 17, price: 94, highlight: 'cheap' },
-  { day: '목', date: 18, price: 89, highlight: 'cheap' },
+  { day: '월', date: 15, price: 79,  highlight: 'cheap' },
+  { day: '화', date: 16, price: 98,  highlight: 'cheap' },
+  { day: '수', date: 17, price: 94,  highlight: 'cheap' },
+  { day: '목', date: 18, price: 89,  highlight: 'cheap' },
   { day: '금', date: 19, price: 107 },
   { day: '토', date: 20, price: 155, highlight: 'expensive' },
   { day: '일', date: 21, price: 172, highlight: 'expensive' },
@@ -21,43 +21,44 @@ const DATES = [
   { day: '화', date: 23, price: 112 },
 ]
 
-const TRANSPORTS = [
-  {
-    id: 'flight',
-    name: '항공',
-    duration: '1h 50m',
-    price: '₩79,000',
-    count: '12편',
-    badge: '가장 저렴',
-    badgeColor: 'bg-[#eff6ff] text-[#006eb5]',
-    route: '/departure',
-  },
-  {
-    id: 'train',
-    name: '기차',
-    duration: '6h 25m',
-    price: '₩103,000',
-    count: '8편',
-    badge: '가장 빠름',
-    badgeColor: 'bg-[#e6f5e8] text-[#008026]',
-    route: '/departure-train',
-  },
-  {
-    id: 'bus',
-    name: '버스',
-    duration: '14h 50m',
-    price: '₩45,000',
-    count: '6편',
-    badge: '가장 저렴',
-    badgeColor: 'bg-[#e6f5e8] text-[#008026]',
-    route: '/departure-bus',
-  },
-]
+// 날짜별 교통편 데이터
+const TRANSPORT_BY_DATE = {
+  13: { flight: { price: 110000, count: '9편',  duration: '1h 50m' }, train: { price: 138000, count: '6편', duration: '6h 25m' }, bus: { price: 58000, count: '4편', duration: '14h 50m' } },
+  14: { flight: { price: 118000, count: '10편', duration: '1h 50m' }, train: { price: 145000, count: '7편', duration: '6h 25m' }, bus: { price: 62000, count: '4편', duration: '14h 50m' } },
+  15: { flight: { price: 79000,  count: '12편', duration: '1h 50m' }, train: { price: 103000, count: '8편', duration: '6h 25m' }, bus: { price: 45000, count: '6편', duration: '14h 50m' } },
+  16: { flight: { price: 98000,  count: '11편', duration: '1h 50m' }, train: { price: 120000, count: '8편', duration: '6h 25m' }, bus: { price: 52000, count: '5편', duration: '14h 50m' } },
+  17: { flight: { price: 94000,  count: '11편', duration: '1h 50m' }, train: { price: 115000, count: '8편', duration: '6h 25m' }, bus: { price: 48000, count: '5편', duration: '14h 50m' } },
+  18: { flight: { price: 89000,  count: '12편', duration: '1h 50m' }, train: { price: 108000, count: '9편', duration: '6h 25m' }, bus: { price: 43000, count: '6편', duration: '14h 50m' } },
+  19: { flight: { price: 107000, count: '10편', duration: '1h 50m' }, train: { price: 130000, count: '7편', duration: '6h 25m' }, bus: { price: 55000, count: '5편', duration: '14h 50m' } },
+  20: { flight: { price: 155000, count: '8편',  duration: '1h 50m' }, train: { price: 182000, count: '5편', duration: '6h 25m' }, bus: { price: 88000, count: '3편', duration: '14h 50m' } },
+  21: { flight: { price: 172000, count: '7편',  duration: '1h 50m' }, train: { price: 198000, count: '5편', duration: '6h 25m' }, bus: { price: 95000, count: '3편', duration: '14h 50m' } },
+  22: { flight: { price: 128000, count: '10편', duration: '1h 50m' }, train: { price: 152000, count: '6편', duration: '6h 25m' }, bus: { price: 68000, count: '4편', duration: '14h 50m' } },
+  23: { flight: { price: 112000, count: '11편', duration: '1h 50m' }, train: { price: 138000, count: '7편', duration: '6h 25m' }, bus: { price: 59000, count: '5편', duration: '14h 50m' } },
+}
+
+function getBadge(key, data) {
+  const prices = { flight: data.flight.price, train: data.train.price, bus: data.bus.price }
+  const min = Math.min(...Object.values(prices))
+  const max = Math.min(prices.flight, prices.train) // 가장 빠름은 항공/기차 중 짧은 것
+  if (key === 'flight' && prices.flight === min) return { text: '가장 저렴', color: 'bg-[#eff6ff] text-[#006eb5]' }
+  if (key === 'train' && prices.train === min) return { text: '가장 저렴', color: 'bg-[#eff6ff] text-[#006eb5]' }
+  if (key === 'bus'   && prices.bus   === min) return { text: '가장 저렴', color: 'bg-[#e6f5e8] text-[#008026]' }
+  if (key === 'flight') return { text: '가장 빠름', color: 'bg-[#e6f5e8] text-[#008026]' }
+  return null
+}
 
 export default function Compare() {
   const navigate = useNavigate()
   const [selectedDate, setSelectedDate] = useState(15)
   const [selectedTransport, setSelectedTransport] = useState(null)
+
+  const data = TRANSPORT_BY_DATE[selectedDate]
+
+  const TRANSPORTS = [
+    { id: 'flight', name: '항공', route: '/departure',       ...data.flight },
+    { id: 'train',  name: '기차', route: '/departure-train', ...data.train  },
+    { id: 'bus',    name: '버스', route: '/departure-bus',   ...data.bus    },
+  ]
 
   const handleTransportClick = (t) => {
     setSelectedTransport(t.id)
@@ -99,6 +100,7 @@ export default function Compare() {
         </div>
 
         <div className="flex flex-col gap-[56px]">
+          {/* 날짜 스크롤 */}
           <div className="flex flex-col gap-[8px]">
             <div className="flex items-center gap-[4px]">
               <div className="size-[8px] rounded-full bg-[#afb8c5]" />
@@ -109,12 +111,12 @@ export default function Compare() {
                 {DATES.map((d) => (
                   <button
                     key={d.date}
-                    onClick={() => setSelectedDate(d.date)}
+                    onClick={() => { setSelectedDate(d.date); setSelectedTransport(null) }}
                     className={`size-[48px] flex flex-col items-center justify-center rounded-[8px] border-2 flex-shrink-0
                       ${d.date === selectedDate
                         ? 'bg-[#132968] border-[#132968]'
                         : d.highlight === 'expensive' ? 'border-[#fd3235]'
-                        : d.highlight === 'cheap' ? 'border-[#008026]'
+                        : d.highlight === 'cheap'     ? 'border-[#008026]'
                         : 'border-[#e5e7ee]'}`}
                   >
                     <span className={`text-[10px] font-normal ${d.date === selectedDate ? 'text-[#d8d9dd]' : 'text-[#dadbe0]'}`}>{d.day}</span>
@@ -122,7 +124,7 @@ export default function Compare() {
                     <span className={`text-[10px] font-normal
                       ${d.date === selectedDate ? 'text-[#d8d9dd]'
                         : d.highlight === 'expensive' ? 'text-[#fd3235]'
-                        : d.highlight === 'cheap' ? 'text-[#008026]'
+                        : d.highlight === 'cheap'     ? 'text-[#008026]'
                         : 'text-[#c24c00]'}`}>
                       ₩{d.price}
                     </span>
@@ -132,41 +134,45 @@ export default function Compare() {
             </div>
           </div>
 
+          {/* 교통편 카드 */}
           <div className="flex flex-col gap-[24px]">
-            {TRANSPORTS.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => handleTransportClick(t)}
-                className={`bg-white border-2 rounded-[8px] px-[20px] py-[12px] flex items-center justify-between w-full transition-colors
-                  ${selectedTransport === t.id ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}
-              >
-                <div className="flex flex-col gap-[12px] flex-1">
-                  <div className="flex items-center gap-[12px]">
-                    <span className="text-[16px] font-semibold text-black">{t.name}</span>
-                    {t.badge && (
-                      <div className={`h-[20px] px-[12px] rounded-[4px] flex items-center ${t.badgeColor}`}>
-                        <span className="text-[10px] font-semibold">{t.badge}</span>
+            {TRANSPORTS.map((t) => {
+              const badge = getBadge(t.id, data)
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => handleTransportClick(t)}
+                  className={`bg-white border-2 rounded-[8px] px-[20px] py-[12px] flex items-center justify-between w-full transition-colors
+                    ${selectedTransport === t.id ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}
+                >
+                  <div className="flex flex-col gap-[12px] flex-1">
+                    <div className="flex items-center gap-[12px]">
+                      <span className="text-[16px] font-semibold text-black">{t.name}</span>
+                      {badge && (
+                        <div className={`h-[20px] px-[12px] rounded-[4px] flex items-center ${badge.color}`}>
+                          <span className="text-[10px] font-semibold">{badge.text}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex gap-[20px]">
+                      <div className="flex flex-col items-start">
+                        <span className="text-[#afb8c5] text-[12px] font-semibold">소요시간</span>
+                        <span className="text-[#132968] text-[14px] font-semibold">{t.duration}</span>
                       </div>
-                    )}
-                  </div>
-                  <div className="flex gap-[20px]">
-                    <div className="flex flex-col items-start">
-                      <span className="text-[#afb8c5] text-[12px] font-semibold">소요시간</span>
-                      <span className="text-[#132968] text-[14px] font-semibold">{t.duration}</span>
-                    </div>
-                    <div className="flex flex-col items-start">
-                      <span className="text-[#afb8c5] text-[12px] font-semibold">최저가</span>
-                      <span className="text-[#ff5553] text-[14px] font-semibold">{t.price}</span>
-                    </div>
-                    <div className="flex flex-col items-start">
-                      <span className="text-[#afb8c5] text-[12px] font-semibold">편수</span>
-                      <span className="text-[#132968] text-[14px] font-semibold">{t.count}</span>
+                      <div className="flex flex-col items-start">
+                        <span className="text-[#afb8c5] text-[12px] font-semibold">최저가</span>
+                        <span className="text-[#ff5553] text-[14px] font-semibold">₩{t.price.toLocaleString()}</span>
+                      </div>
+                      <div className="flex flex-col items-start">
+                        <span className="text-[#afb8c5] text-[12px] font-semibold">편수</span>
+                        <span className="text-[#132968] text-[14px] font-semibold">{t.count}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <img src={imgChevFwd} className="size-[20px]" alt="" />
-              </button>
-            ))}
+                  <img src={imgChevFwd} className="size-[20px]" alt="" />
+                </button>
+              )
+            })}
           </div>
         </div>
 
