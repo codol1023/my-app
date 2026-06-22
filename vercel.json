@@ -1,3 +1,4 @@
 {
+  "alias": ["my-app-omio-ux.vercel.app"],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
