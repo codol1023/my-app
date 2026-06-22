@@ -3,21 +3,21 @@ import { useNavigate } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 
-const imgCircle = "https://www.figma.com/api/mcp/asset/d37e4e2f-af9b-4f8a-9263-b45e72053c49"
-const imgLocation = "https://www.figma.com/api/mcp/asset/04799a48-3974-4bd7-bf96-00670a5c4bc1"
-const imgCalendar = "https://www.figma.com/api/mcp/asset/a021c597-aa5a-4330-beec-f06a2fb7837b"
-const imgCalendar2 = "https://www.figma.com/api/mcp/asset/29f4631a-9b2d-44e4-a005-745eac49e690"
-const imgClose = "https://www.figma.com/api/mcp/asset/2600c4ad-2a3c-42cd-a26b-170d7ea016d6"
-const imgPerson = "https://www.figma.com/api/mcp/asset/5955395a-126d-4d96-b1d2-20885bb322af"
-const imgMinus = "https://www.figma.com/api/mcp/asset/a6cd7f38-bde7-4650-ac75-16c1f9d7e1f5"
-const imgPlus = "https://www.figma.com/api/mcp/asset/46601088-3538-4fb7-9df1-aa3bb2c75bb1"
-const imgSwap = "https://www.figma.com/api/mcp/asset/974bb182-c997-4c7c-aff4-ebec3b5f53c9"
-const imgChevFwd = "https://www.figma.com/api/mcp/asset/4053a4eb-29cd-4707-9c6b-360893f541cb"
-const imgChevBwd = "https://www.figma.com/api/mcp/asset/d090958c-e841-4e4e-acdc-e09ad94accba"
-const imgEllipse = "https://www.figma.com/api/mcp/asset/a29c4611-5d7c-4a8b-82b5-de3edd89ad45"
-const imgEllipseRed = "https://www.figma.com/api/mcp/asset/11cc3751-3ab1-4206-b2c3-6b583cb2227b"
-const imgEllipseBlue = "https://www.figma.com/api/mcp/asset/35840b6c-2305-4b99-b6f0-5e3ce4deffbe"
-const imgEllipseSelected = "https://www.figma.com/api/mcp/asset/1f1fe947-4ba8-42b3-9c22-1a002933daeb"
+const imgCircle = "/assets/d37e4e2f-af9b-4f8a-9263-b45e72053c49.png"
+const imgLocation = "/assets/04799a48-3974-4bd7-bf96-00670a5c4bc1.png"
+const imgCalendar = "/assets/a021c597-aa5a-4330-beec-f06a2fb7837b.png"
+const imgCalendar2 = "/assets/29f4631a-9b2d-44e4-a005-745eac49e690.png"
+const imgClose = "/assets/2600c4ad-2a3c-42cd-a26b-170d7ea016d6.png"
+const imgPerson = "/assets/5955395a-126d-4d96-b1d2-20885bb322af.png"
+const imgMinus = "/assets/a6cd7f38-bde7-4650-ac75-16c1f9d7e1f5.png"
+const imgPlus = "/assets/46601088-3538-4fb7-9df1-aa3bb2c75bb1.png"
+const imgSwap = "/assets/974bb182-c997-4c7c-aff4-ebec3b5f53c9.png"
+const imgChevFwd = "/assets/4053a4eb-29cd-4707-9c6b-360893f541cb.png"
+const imgChevBwd = "/assets/d090958c-e841-4e4e-acdc-e09ad94accba.png"
+const imgEllipse = "/assets/a29c4611-5d7c-4a8b-82b5-de3edd89ad45.png"
+const imgEllipseRed = "/assets/11cc3751-3ab1-4206-b2c3-6b583cb2227b.png"
+const imgEllipseBlue = "/assets/35840b6c-2305-4b99-b6f0-5e3ce4deffbe.png"
+const imgEllipseSelected = "/assets/1f1fe947-4ba8-42b3-9c22-1a002933daeb.png"
 
 const DAYS = ['일', '월', '화', '수', '목', '금', '토']
 const JUNE_2026 = [

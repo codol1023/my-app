@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="mobiledata_arrows">
+<mask id="mask0_0_56" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+<rect id="Bounding box" width="24" height="24" fill="var(--fill-0, #5E90CC)"/>
+</mask>
+<g mask="url(#mask0_0_56)">
+<path id="mobiledata_arrows_2" d="M8 9.975H10V17.15L11.55 15.6L13 17L9 21L5 17L6.45 15.6L8 17.15V9.975ZM16 13.975H14V6.8L12.4 8.4L11 7L15 3L19 7L17.6 8.4L16 6.8V13.975Z" fill="var(--fill-0, #5E90CC)"/>
+</g>
+</g>
+</svg>

@@ -2,10 +2,10 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
 
-const imgBack = "https://www.figma.com/api/mcp/asset/742a60c5-4905-4d96-b93b-83c13794dbfd"
-const imgShare = "https://www.figma.com/api/mcp/asset/fbc6d178-7d9a-427b-af4f-36457ef79fae"
-const imgArrow = "https://www.figma.com/api/mcp/asset/5508c0d6-9325-4cc0-a5b6-5af21a64710d"
-const imgChevFwd = "https://www.figma.com/api/mcp/asset/70129f0e-45a3-4d8d-8628-62de71e52f95"
+const imgBack = "/assets/742a60c5-4905-4d96-b93b-83c13794dbfd.png"
+const imgShare = "/assets/fbc6d178-7d9a-427b-af4f-36457ef79fae.png"
+const imgArrow = "/assets/5508c0d6-9325-4cc0-a5b6-5af21a64710d.png"
+const imgChevFwd = "/assets/70129f0e-45a3-4d8d-8628-62de71e52f95.png"
 
 const FLIGHTS = [
   { id: 1, dep: '06:15', arr: '08:05', airline: 'Vueling', price: 65000, tags: ['직항', '최저가'] },

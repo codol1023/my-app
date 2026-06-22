@@ -3,15 +3,15 @@ import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 
-const imgCircle = "https://www.figma.com/api/mcp/asset/ad040b28-ae44-4ae4-b832-a1b79882862b"
-const imgLocation = "https://www.figma.com/api/mcp/asset/22da6ea7-f6a1-4763-ace1-f44d12ee519a"
-const imgCalendar = "https://www.figma.com/api/mcp/asset/64b28a3d-21ea-46a1-b050-67857937482e"
-const imgClose = "https://www.figma.com/api/mcp/asset/bd551e32-71d1-4353-b3d8-4f9149875313"
-const imgPerson = "https://www.figma.com/api/mcp/asset/d84570d9-c1c7-477a-a9bf-0aedf4658f3e"
-const imgMinus = "https://www.figma.com/api/mcp/asset/b070dd25-bb90-4bff-92ba-1e66a28c52c4"
-const imgPlus = "https://www.figma.com/api/mcp/asset/42dc366c-84d4-40ac-93ce-e0416ef73976"
-const imgSwap = "https://www.figma.com/api/mcp/asset/d77f90cf-d6a9-4069-b443-cf28e095a904"
-const imgToggleOff = "https://www.figma.com/api/mcp/asset/5f96c425-f5a2-4f8e-aab8-06d4ae6eec25"
+const imgCircle = "/assets/ad040b28-ae44-4ae4-b832-a1b79882862b.png"
+const imgLocation = "/assets/22da6ea7-f6a1-4763-ace1-f44d12ee519a.png"
+const imgCalendar = "/assets/64b28a3d-21ea-46a1-b050-67857937482e.png"
+const imgClose = "/assets/bd551e32-71d1-4353-b3d8-4f9149875313.png"
+const imgPerson = "/assets/d84570d9-c1c7-477a-a9bf-0aedf4658f3e.png"
+const imgMinus = "/assets/b070dd25-bb90-4bff-92ba-1e66a28c52c4.png"
+const imgPlus = "/assets/42dc366c-84d4-40ac-93ce-e0416ef73976.png"
+const imgSwap = "/assets/d77f90cf-d6a9-4069-b443-cf28e095a904.png"
+const imgToggleOff = "/assets/5f96c425-f5a2-4f8e-aab8-06d4ae6eec25.png"
 
 export default function Search() {
   const navigate = useNavigate()

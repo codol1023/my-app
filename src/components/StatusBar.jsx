@@ -1,6 +1,6 @@
-const imgCap = "https://www.figma.com/api/mcp/asset/e10e95f2-0fc7-4730-9208-67fe14b13157"
-const imgWifi = "https://www.figma.com/api/mcp/asset/ed295803-6478-4702-8ed2-c4488e1cbff1"
-const imgCell = "https://www.figma.com/api/mcp/asset/45bc6f96-d0e8-44e0-aa06-343c865b98f1"
+const imgCap = "/assets/e10e95f2-0fc7-4730-9208-67fe14b13157.png"
+const imgWifi = "/assets/ed295803-6478-4702-8ed2-c4488e1cbff1.png"
+const imgCell = "/assets/45bc6f96-d0e8-44e0-aa06-343c865b98f1.png"
 
 export default function StatusBar() {
   return (

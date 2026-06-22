@@ -1,8 +1,8 @@
-const imgSearch = "https://www.figma.com/api/mcp/asset/0c3781af-023f-492c-a994-45f6c1c4cbfe"
-const imgExplore = "https://www.figma.com/api/mcp/asset/faca4991-39ba-4c44-b107-77fe323ea546"
-const imgFavorite = "https://www.figma.com/api/mcp/asset/1fa93016-5197-4edc-b8c5-e26585658b35"
-const imgTicket = "https://www.figma.com/api/mcp/asset/54f58d47-a6a9-4b7c-a799-1dc6aa3d90c2"
-const imgPerson = "https://www.figma.com/api/mcp/asset/69d66e6f-dfef-484c-9a21-bed8eb13a6bd"
+const imgSearch = "/assets/0c3781af-023f-492c-a994-45f6c1c4cbfe.png"
+const imgExplore = "/assets/faca4991-39ba-4c44-b107-77fe323ea546.png"
+const imgFavorite = "/assets/1fa93016-5197-4edc-b8c5-e26585658b35.png"
+const imgTicket = "/assets/54f58d47-a6a9-4b7c-a799-1dc6aa3d90c2.png"
+const imgPerson = "/assets/69d66e6f-dfef-484c-9a21-bed8eb13a6bd.png"
 
 export default function BottomNav() {
   return (

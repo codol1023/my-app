@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 
-const imgBack = "https://www.figma.com/api/mcp/asset/f4409b2a-af79-40c8-b4f3-71ca698148b1"
-const imgChevFwd = "https://www.figma.com/api/mcp/asset/c8273399-f323-4c54-844d-c0fb0d74ad81"
-const imgChevBwd = "https://www.figma.com/api/mcp/asset/0b5df898-c22e-4b20-b178-2a30cc1e7fb1"
-const imgCheck = "https://www.figma.com/api/mcp/asset/0b1e00da-1b6c-456c-b81f-500c0ec44ee9"
-const imgCheck2 = "https://www.figma.com/api/mcp/asset/e2ce479b-570e-42ef-9e24-ba335cd06060"
-const imgUnfold = "https://www.figma.com/api/mcp/asset/de8e5d89-121f-41a6-9297-d75eed20aadc"
+const imgBack = "/assets/f4409b2a-af79-40c8-b4f3-71ca698148b1.png"
+const imgChevFwd = "/assets/c8273399-f323-4c54-844d-c0fb0d74ad81.png"
+const imgChevBwd = "/assets/0b5df898-c22e-4b20-b178-2a30cc1e7fb1.png"
+const imgCheck = "/assets/0b1e00da-1b6c-456c-b81f-500c0ec44ee9.png"
+const imgCheck2 = "/assets/e2ce479b-570e-42ef-9e24-ba335cd06060.png"
+const imgUnfold = "/assets/de8e5d89-121f-41a6-9297-d75eed20aadc.png"
 
 const DAYS = ['일', '월', '화', '수', '목', '금', '토']
 

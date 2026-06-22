@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
 
-const imgBack = "https://www.figma.com/api/mcp/asset/5a5b516c-4ac1-4df0-bebc-b3359bd73b61"
-const imgShare = "https://www.figma.com/api/mcp/asset/904fbc4c-986a-41d6-9ddb-46d3853b94b0"
-const imgArrow = "https://www.figma.com/api/mcp/asset/550185c4-b488-40d9-8da0-059fa59c621e"
-const imgChevFwd = "https://www.figma.com/api/mcp/asset/2634baac-2486-4731-9630-64491c9b06d6"
-const imgChevFwd2 = "https://www.figma.com/api/mcp/asset/941fea48-c848-4734-bfc6-d48d950adaaf"
+const imgBack = "/assets/5a5b516c-4ac1-4df0-bebc-b3359bd73b61.png"
+const imgShare = "/assets/904fbc4c-986a-41d6-9ddb-46d3853b94b0.png"
+const imgArrow = "/assets/550185c4-b488-40d9-8da0-059fa59c621e.png"
+const imgChevFwd = "/assets/2634baac-2486-4731-9630-64491c9b06d6.png"
+const imgChevFwd2 = "/assets/941fea48-c848-4734-bfc6-d48d950adaaf.png"
 
 const DATES = [
   { day: '토', date: 13, price: 110, highlight: 'expensive' },

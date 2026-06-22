@@ -2,12 +2,12 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
 
-const imgBack = "https://www.figma.com/api/mcp/asset/995a2a80-b777-4d81-82a3-698d4c94c9a9"
-const imgShare = "https://www.figma.com/api/mcp/asset/edf2578f-22ee-4361-9cc1-1b5aa571cb1a"
-const imgArrow = "https://www.figma.com/api/mcp/asset/7066fbc0-9e54-406e-b72c-355fdf80ed6c"
-const imgCheck = "https://www.figma.com/api/mcp/asset/9ca9e13e-591e-4983-9786-b5bce758e889"
-const imgChevFwd = "https://www.figma.com/api/mcp/asset/70129f0e-45a3-4d8d-8628-62de71e52f95"
-const imgDownward = "https://www.figma.com/api/mcp/asset/bd141235-2f4b-4cc4-833f-35364f305094"
+const imgBack = "/assets/995a2a80-b777-4d81-82a3-698d4c94c9a9.png"
+const imgShare = "/assets/edf2578f-22ee-4361-9cc1-1b5aa571cb1a.png"
+const imgArrow = "/assets/7066fbc0-9e54-406e-b72c-355fdf80ed6c.png"
+const imgCheck = "/assets/9ca9e13e-591e-4983-9786-b5bce758e889.png"
+const imgChevFwd = "/assets/70129f0e-45a3-4d8d-8628-62de71e52f95.png"
+const imgDownward = "/assets/bd141235-2f4b-4cc4-833f-35364f305094.png"
 
 const RETURN_DATES = [
   { day: '목', date: 25, price: 162, expensive: true },
