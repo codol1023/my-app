@@ -10,7 +10,7 @@ const imgChevFwd = "/assets/2634baac-2486-4731-9630-64491c9b06d6.png"
 const DATES = [
   { day: '토', date: 13, price: 110, highlight: 'expensive' },
   { day: '일', date: 14, price: 118, highlight: 'expensive' },
-  { day: '월', date: 15, price: 79 },
+  { day: '월', date: 15, price: 79, highlight: 'cheap' },
   { day: '화', date: 16, price: 98, highlight: 'cheap' },
   { day: '수', date: 17, price: 94, highlight: 'cheap' },
   { day: '목', date: 18, price: 89, highlight: 'cheap' },
