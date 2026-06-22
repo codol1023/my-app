@@ -9,7 +9,7 @@ const imgChevFwd = "/assets/70129f0e-45a3-4d8d-8628-62de71e52f95.png"
 
 const FLIGHTS = [
   { id: 1, dep: '06:15', arr: '08:05', airline: 'Vueling', price: 65000, tags: ['직항', '최저가'] },
-  { id: 2, dep: '10:30', arr: '12:20', airline: 'Iberia', price: 79000, tags: ['직항', '선택됨'] },
+  { id: 2, dep: '10:30', arr: '12:20', airline: 'Iberia', price: 79000, tags: ['직항'] },
   { id: 3, dep: '14:45', arr: '16:35', airline: 'Air France', price: 65000, tags: ['직항'] },
 ]
 
@@ -22,7 +22,7 @@ const TAG_STYLES = {
 
 export default function DepartureFlight() {
   const navigate = useNavigate()
-  const [selected, setSelected] = useState(2)
+  const [selected, setSelected] = useState(null)
   const [filter, setFilter] = useState('전체')
   const filters = ['전체', '직항만', '오전 출발', '가격순']
 
@@ -98,6 +98,11 @@ export default function DepartureFlight() {
                       <span className="text-[12px] font-medium">{tag}</span>
                     </div>
                   ))}
+                  {selected === f.id && (
+                    <div className="h-[28px] px-[12px] rounded-[4px] flex items-center bg-black">
+                      <span className="text-[12px] font-medium text-white">선택됨</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </button>
@@ -107,10 +112,12 @@ export default function DepartureFlight() {
 
       <div className="absolute bottom-0 left-0 right-0 px-[16px] pb-[16px] pt-[8px] bg-white">
         <button
-          onClick={() => navigate('/return')}
-          className="bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full"
+          onClick={() => selected && navigate('/return')}
+          className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors ${selected ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}
         >
-          <span className="text-white text-[14px] font-medium">이 편으로 출발 선택</span>
+          <span className="text-white text-[14px] font-medium">
+            {selected ? '이 편으로 출발 선택' : '편을 선택해주세요'}
+          </span>
         </button>
       </div>
     </div>
