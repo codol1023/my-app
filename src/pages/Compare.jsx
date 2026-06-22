@@ -62,7 +62,7 @@ export default function Compare() {
 
   const handleTransportClick = (t) => {
     setSelectedTransport(t.id)
-    navigate(t.route)
+    navigate(`${t.route}?date=${selectedDate}`)
   }
 
   return (
@@ -179,7 +179,7 @@ export default function Compare() {
         <div className="flex flex-col gap-[10px]">
           <p className="text-[#afb8c5] text-[12px]">카드 탭 → 전체 편 리스트로 이동</p>
           <button
-            onClick={() => selectedTransport && navigate(TRANSPORTS.find(t => t.id === selectedTransport)?.route)}
+            onClick={() => { const t = TRANSPORTS.find(t => t.id === selectedTransport); if (t) navigate(`${t.route}?date=${selectedDate}`) }}
             className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors
               ${selectedTransport ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}
           >
