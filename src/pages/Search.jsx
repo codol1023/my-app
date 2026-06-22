@@ -72,7 +72,7 @@ export default function Search() {
               <span className="text-[#6f7584] text-[12px] font-normal">날짜별 최저가 달력으로 탐색</span>
             </div>
             <button
-              onClick={() => setFlexDate(!flexDate)}
+              onClick={() => { setFlexDate(!flexDate); if (!flexDate) navigate('/flexible') }}
               className={`h-[34px] w-[66px] rounded-full flex items-center px-[1px] transition-all ${flexDate ? 'bg-[#fa6b6b] justify-end' : 'bg-[#d9d9d9] justify-start'}`}
             >
               <div className="size-[32px] rounded-full bg-white shadow" />
