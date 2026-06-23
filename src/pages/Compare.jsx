@@ -3,21 +3,23 @@ import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
 import Icon from '../components/Icon'
 
-const DATES = [
-  { day: '토', date: 13, price: 110, highlight: 'expensive' },
-  { day: '일', date: 14, price: 118, highlight: 'expensive' },
-  { day: '월', date: 15, price: 79,  highlight: 'cheap' },
-  { day: '화', date: 16, price: 98,  highlight: 'cheap' },
-  { day: '수', date: 17, price: 94,  highlight: 'cheap' },
-  { day: '목', date: 18, price: 89,  highlight: 'cheap' },
-  { day: '금', date: 19, price: 107 },
-  { day: '토', date: 20, price: 155, highlight: 'expensive' },
-  { day: '일', date: 21, price: 172, highlight: 'expensive' },
-  { day: '월', date: 22, price: 128 },
-  { day: '화', date: 23, price: 112 },
-]
+// 2026년 6월 전체 요일 매핑
+const DAY_NAMES = ['일','월','화','수','목','금','토']
+function dayOf(date) { return DAY_NAMES[new Date(2026, 5, date).getDay()] }
 
 const TRANSPORT_BY_DATE = {
+  1:  { flight: { price: 128000, count: '10편', duration: '1h 50m' }, train: { price: 155000, count: '6편', duration: '6h 25m' }, bus: { price: 68000, count: '4편', duration: '14h 50m' } },
+  2:  { flight: { price: 175000, count: '7편',  duration: '1h 50m' }, train: { price: 208000, count: '4편', duration: '6h 25m' }, bus: { price: 95000, count: '3편', duration: '14h 50m' } },
+  3:  { flight: { price: 130000, count: '9편',  duration: '1h 50m' }, train: { price: 158000, count: '6편', duration: '6h 25m' }, bus: { price: 70000, count: '4편', duration: '14h 50m' } },
+  4:  { flight: { price: 122000, count: '10편', duration: '1h 50m' }, train: { price: 148000, count: '7편', duration: '6h 25m' }, bus: { price: 65000, count: '5편', duration: '14h 50m' } },
+  5:  { flight: { price: 119000, count: '10편', duration: '1h 50m' }, train: { price: 145000, count: '7편', duration: '6h 25m' }, bus: { price: 62000, count: '5편', duration: '14h 50m' } },
+  6:  { flight: { price: 95000,  count: '11편', duration: '1h 50m' }, train: { price: 118000, count: '8편', duration: '6h 25m' }, bus: { price: 50000, count: '6편', duration: '14h 50m' } },
+  7:  { flight: { price: 97000,  count: '11편', duration: '1h 50m' }, train: { price: 120000, count: '8편', duration: '6h 25m' }, bus: { price: 52000, count: '5편', duration: '14h 50m' } },
+  8:  { flight: { price: 160000, count: '8편',  duration: '1h 50m' }, train: { price: 188000, count: '5편', duration: '6h 25m' }, bus: { price: 85000, count: '3편', duration: '14h 50m' } },
+  9:  { flight: { price: 115000, count: '10편', duration: '1h 50m' }, train: { price: 140000, count: '7편', duration: '6h 25m' }, bus: { price: 62000, count: '5편', duration: '14h 50m' } },
+  10: { flight: { price: 99000,  count: '11편', duration: '1h 50m' }, train: { price: 122000, count: '8편', duration: '6h 25m' }, bus: { price: 53000, count: '5편', duration: '14h 50m' } },
+  11: { flight: { price: 92000,  count: '12편', duration: '1h 50m' }, train: { price: 112000, count: '9편', duration: '6h 25m' }, bus: { price: 48000, count: '6편', duration: '14h 50m' } },
+  12: { flight: { price: 91000,  count: '12편', duration: '1h 50m' }, train: { price: 110000, count: '9편', duration: '6h 25m' }, bus: { price: 47000, count: '6편', duration: '14h 50m' } },
   13: { flight: { price: 110000, count: '9편',  duration: '1h 50m' }, train: { price: 138000, count: '6편', duration: '6h 25m' }, bus: { price: 58000, count: '4편', duration: '14h 50m' } },
   14: { flight: { price: 118000, count: '10편', duration: '1h 50m' }, train: { price: 145000, count: '7편', duration: '6h 25m' }, bus: { price: 62000, count: '4편', duration: '14h 50m' } },
   15: { flight: { price: 79000,  count: '12편', duration: '1h 50m' }, train: { price: 103000, count: '8편', duration: '6h 25m' }, bus: { price: 45000, count: '6편', duration: '14h 50m' } },
@@ -29,7 +31,33 @@ const TRANSPORT_BY_DATE = {
   21: { flight: { price: 172000, count: '7편',  duration: '1h 50m' }, train: { price: 198000, count: '5편', duration: '6h 25m' }, bus: { price: 95000, count: '3편', duration: '14h 50m' } },
   22: { flight: { price: 128000, count: '10편', duration: '1h 50m' }, train: { price: 152000, count: '6편', duration: '6h 25m' }, bus: { price: 68000, count: '4편', duration: '14h 50m' } },
   23: { flight: { price: 112000, count: '11편', duration: '1h 50m' }, train: { price: 138000, count: '7편', duration: '6h 25m' }, bus: { price: 59000, count: '5편', duration: '14h 50m' } },
+  24: { flight: { price: 109000, count: '11편', duration: '1h 50m' }, train: { price: 134000, count: '7편', duration: '6h 25m' }, bus: { price: 57000, count: '5편', duration: '14h 50m' } },
+  25: { flight: { price: 162000, count: '7편',  duration: '1h 50m' }, train: { price: 192000, count: '4편', duration: '6h 25m' }, bus: { price: 88000, count: '3편', duration: '14h 50m' } },
+  26: { flight: { price: 169000, count: '7편',  duration: '1h 50m' }, train: { price: 200000, count: '4편', duration: '6h 25m' }, bus: { price: 92000, count: '3편', duration: '14h 50m' } },
+  27: { flight: { price: 145000, count: '9편',  duration: '1h 50m' }, train: { price: 172000, count: '5편', duration: '6h 25m' }, bus: { price: 78000, count: '4편', duration: '14h 50m' } },
+  28: { flight: { price: 138000, count: '9편',  duration: '1h 50m' }, train: { price: 164000, count: '6편', duration: '6h 25m' }, bus: { price: 73000, count: '4편', duration: '14h 50m' } },
+  29: { flight: { price: 115000, count: '10편', duration: '1h 50m' }, train: { price: 140000, count: '7편', duration: '6h 25m' }, bus: { price: 60000, count: '5편', duration: '14h 50m' } },
+  30: { flight: { price: 108000, count: '10편', duration: '1h 50m' }, train: { price: 132000, count: '7편', duration: '6h 25m' }, bus: { price: 56000, count: '5편', duration: '14h 50m' } },
 }
+
+// 가격 기반 하이라이트
+function getHighlight(price) {
+  if (price <= 100) return 'cheap'
+  if (price >= 145) return 'expensive'
+  return null
+}
+
+// 6월 1-30 전체 날짜 동적 생성
+const JUNE_PRICES = {
+  1:128,2:175,3:130,4:122,5:119,6:95,7:97,8:160,9:115,10:99,11:92,12:91,
+  13:110,14:118,15:79,16:98,17:94,18:89,19:107,20:155,21:172,22:128,23:112,
+  24:109,25:162,26:169,27:145,28:138,29:115,30:108,
+}
+const DATES = Array.from({ length: 30 }, (_, i) => {
+  const date = i + 1
+  const price = JUNE_PRICES[date]
+  return { day: dayOf(date), date, price, highlight: getHighlight(price) }
+})
 
 function getBadge(key, data) {
   const prices = { flight: data.flight.price, train: data.train.price, bus: data.bus.price }
@@ -44,7 +72,7 @@ export default function Compare() {
   const [searchParams] = useSearchParams()
   const initDate = parseInt(searchParams.get('date') ?? '15', 10)
   const [selectedDate, setSelectedDate] = useState(
-    DATES.find(d => d.date === initDate) ? initDate : 15
+    (initDate >= 1 && initDate <= 30) ? initDate : 15
   )
   const [selectedTransport, setSelectedTransport] = useState(null)
 

@@ -61,7 +61,7 @@ export default function ReturnFlight() {
     <div className="flex flex-col bg-white" style={{ height: '100svh' }}>
 
       {/* ── 고정 헤더 ── */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 pt-[53px]">
         <StatusBar />
         <div className="bg-[#132968] h-[60px] flex items-center justify-between px-[16px]">
           <button onClick={() => navigate(-1)} className="size-[48px] flex items-center justify-center">
@@ -92,7 +92,7 @@ export default function ReturnFlight() {
             </div>
             <p className="text-[#6b7281] text-[14px]">성인 1명</p>
           </div>
-          <button className="border border-[#bfd6ee] rounded-[4px] h-[20px] px-[10px] flex items-center">
+          <button onClick={() => navigate("/")} className="border border-[#bfd6ee] rounded-[4px] h-[20px] px-[10px] flex items-center">
             <span className="text-[#006eb5] text-[10px] font-semibold">경로 수정</span>
           </button>
         </div>
@@ -106,7 +106,7 @@ export default function ReturnFlight() {
               <p className="text-[#00e275] text-[14px]">6/15(일) · Iberia · ₩79,000 · 10:30</p>
             </div>
           </div>
-          <button className="bg-white border border-[#bfd6ee] rounded-[4px] h-[20px] px-[10px] flex items-center">
+          <button onClick={() => navigate(-1)} className="bg-white border border-[#bfd6ee] rounded-[4px] h-[20px] px-[10px] flex items-center">
             <span className="text-[#006eb5] text-[10px] font-semibold">변경</span>
           </button>
         </div>

@@ -46,7 +46,7 @@ export default function DepartureFlight() {
     <div className="flex flex-col bg-white" style={{ height: '100svh' }}>
 
       {/* ── 고정 헤더 ── */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 pt-[53px]">
         <StatusBar />
         <div className="bg-[#132968] h-[60px] flex items-center justify-between px-[16px]">
           <button onClick={() => navigate(-1)} className="size-[48px] flex items-center justify-center">
