@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
 import Icon from '../components/Icon'
@@ -41,7 +41,11 @@ function getBadge(key, data) {
 
 export default function Compare() {
   const navigate = useNavigate()
-  const [selectedDate, setSelectedDate] = useState(15)
+  const [searchParams] = useSearchParams()
+  const initDate = parseInt(searchParams.get('date') ?? '15', 10)
+  const [selectedDate, setSelectedDate] = useState(
+    DATES.find(d => d.date === initDate) ? initDate : 15
+  )
   const [selectedTransport, setSelectedTransport] = useState(null)
 
   const data = TRANSPORT_BY_DATE[selectedDate]
@@ -53,7 +57,8 @@ export default function Compare() {
 
   const handleTransportClick = (t) => {
     setSelectedTransport(t.id)
-    navigate(`${t.route}?date=${selectedDate}`)
+    const count = parseInt(t.count)
+    navigate(`${t.route}?date=${selectedDate}&count=${count}&minprice=${t.price}`)
   }
 
   return (
@@ -160,7 +165,7 @@ export default function Compare() {
         <div className="flex flex-col gap-[10px]">
           <p className="text-[#afb8c5] text-[12px]">카드 탭 → 전체 편 리스트로 이동</p>
           <button
-            onClick={() => { const t = TRANSPORTS.find(t => t.id === selectedTransport); if (t) navigate(`${t.route}?date=${selectedDate}`) }}
+            onClick={() => { const t = TRANSPORTS.find(t => t.id === selectedTransport); if (t) navigate(`${t.route}?date=${selectedDate}&count=${parseInt(t.count)}&minprice=${t.price}`) }}
             className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors ${selectedTransport ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}
           >
             <span className="text-white text-[14px] font-medium">

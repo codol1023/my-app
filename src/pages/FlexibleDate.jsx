@@ -236,7 +236,7 @@ export default function FlexibleDate() {
 
       {/* CTA Button — 달력 아래 여백 후 배치 */}
       <div className="absolute top-[680px] left-[16px] right-[16px]">
-        <button onClick={() => navigate('/compare')}
+        <button onClick={() => navigate(`/compare${selectedDay ? `?date=${selectedDay}` : ''}`)}
           className="w-full h-[48px] bg-[#fa6b6b] rounded-[8px] flex items-center justify-center gap-[4px] border-none cursor-pointer">
           <span className="text-white text-[14px] font-medium">{ctaText}</span>
           <Icon name="arrow_forward" size={20} color="white" />

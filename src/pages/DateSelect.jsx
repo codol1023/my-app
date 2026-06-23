@@ -181,7 +181,7 @@ export default function DateSelect() {
           </div>
         </div>
 
-        <button onClick={() => navigate('/compare')}
+        <button onClick={() => navigate(`/compare${departDay ? `?date=${departDay}` : ''}`)}
           className="bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full">
           <span className="text-white text-[14px] font-medium">검색 Omio</span>
         </button>
