@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom'
+import Icon from '../components/Icon'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
 
-const imgBack = "/assets/995a2a80-b777-4d81-82a3-698d4c94c9a9.png"
-const imgShare = "/assets/edf2578f-22ee-4361-9cc1-1b5aa571cb1a.png"
-const imgArrow = "/assets/7066fbc0-9e54-406e-b72c-355fdf80ed6c.png"
-const imgCheck = "/assets/9ca9e13e-591e-4983-9786-b5bce758e889.png"
-const imgChevFwd = "/assets/70129f0e-45a3-4d8d-8628-62de71e52f95.png"
-const imgDownward = "/assets/bd141235-2f4b-4cc4-833f-35364f305094.png"
+
+
+
+
+
+
 
 const RETURN_DATES = [
   { day: '목', date: 25, price: 162, expensive: true },
@@ -66,7 +67,7 @@ export default function ReturnFlight() {
 
       <div className="absolute bg-[#132968] left-0 right-0 top-[53px] h-[60px] flex items-center justify-between px-[16px]">
         <button onClick={() => navigate(-1)} className="size-[48px] flex items-center justify-center">
-          <img src={imgBack} className="size-[24px]" alt="뒤로" />
+          <Icon name="arrow_back_ios_new" size={24} color="white" />
         </button>
         <p className="text-white text-[16px] font-semibold">교통편 비교</p>
         <div className="flex items-center">
@@ -74,7 +75,7 @@ export default function ReturnFlight() {
             <span className="text-white text-[12px] font-semibold">수정</span>
           </div>
           <button className="size-[48px] flex items-center justify-center">
-            <img src={imgShare} className="size-[24px]" alt="공유" />
+            <Icon name="ios_share" size={24} color="white" />
           </button>
         </div>
       </div>
@@ -85,7 +86,7 @@ export default function ReturnFlight() {
             <div>
               <div className="flex items-center gap-[4px]">
                 <span className="text-[#132968] text-[16px] font-semibold">파리</span>
-                <img src={imgArrow} className="size-[24px]" alt="→" />
+                <Icon name="arrow_forward" size={24} color="#132968" />
                 <span className="text-[#132968] text-[16px] font-semibold">바르셀로나 · 왕복</span>
               </div>
               <p className="text-[#6b7281] text-[14px]">성인 1명</p>
@@ -97,7 +98,7 @@ export default function ReturnFlight() {
 
           <div className="bg-[#e6f5e8] border border-[#57f3a7] h-[50px] rounded-[8px] flex items-center justify-between px-[20px]">
             <div className="flex items-center gap-[8px]">
-              <img src={imgCheck} className="size-[24px]" alt="" />
+              <Icon name="check_box" size={24} color="#008026" />
               <div>
                 <p className="text-[#008026] text-[16px] font-semibold">출발편 선택 완료</p>
                 <p className="text-[#00e275] text-[14px]">6/15(일) · Iberia · ₩79,000 · 10:30</p>
@@ -114,7 +115,7 @@ export default function ReturnFlight() {
             <p className="text-white text-[16px] font-semibold">리턴편 선택</p>
             <div className="bg-[#3a4a67] rounded-[4px] h-[28px] px-[12px] flex items-center gap-[4px]">
               <span className="text-white text-[12px] font-medium">자동 오픈</span>
-              <img src={imgDownward} className="size-[20px]" alt="" />
+              <Icon name="arrow_downward_alt" size={20} color="white" />
             </div>
           </div>
 
@@ -170,7 +171,7 @@ export default function ReturnFlight() {
                       <span className="text-[#7d8391] text-[14px] font-semibold">{opt.duration}</span>
                       <div className="flex items-center gap-[4px]">
                         <span className="text-[#132968] text-[14px] font-semibold">{opt.count}</span>
-                        <img src={imgChevFwd} className="size-[20px]" alt="" />
+                        <Icon name="chevron_right" size={20} color="#afb8c5" />
                       </div>
                     </div>
                   </button>

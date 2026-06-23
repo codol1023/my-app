@@ -2,22 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
-
-const imgCircle = "/assets/d37e4e2f-af9b-4f8a-9263-b45e72053c49.png"
-const imgLocation = "/assets/04799a48-3974-4bd7-bf96-00670a5c4bc1.png"
-const imgCalendar = "/assets/a021c597-aa5a-4330-beec-f06a2fb7837b.png"
-const imgCalendar2 = "/assets/29f4631a-9b2d-44e4-a005-745eac49e690.png"
-const imgClose = "/assets/2600c4ad-2a3c-42cd-a26b-170d7ea016d6.png"
-const imgPerson = "/assets/5955395a-126d-4d96-b1d2-20885bb322af.png"
-const imgMinus = "/assets/a6cd7f38-bde7-4650-ac75-16c1f9d7e1f5.png"
-const imgPlus = "/assets/46601088-3538-4fb7-9df1-aa3bb2c75bb1.png"
-const imgSwap = "/assets/974bb182-c997-4c7c-aff4-ebec3b5f53c9.png"
-const imgChevFwd = "/assets/4053a4eb-29cd-4707-9c6b-360893f541cb.png"
-const imgChevBwd = "/assets/d090958c-e841-4e4e-acdc-e09ad94accba.png"
-const imgEllipse = "/assets/a29c4611-5d7c-4a8b-82b5-de3edd89ad45.png"
-const imgEllipseRed = "/assets/11cc3751-3ab1-4206-b2c3-6b583cb2227b.png"
-const imgEllipseBlue = "/assets/35840b6c-2305-4b99-b6f0-5e3ce4deffbe.png"
-const imgEllipseSelected = "/assets/1f1fe947-4ba8-42b3-9c22-1a002933daeb.png"
+import Icon from '../components/Icon'
 
 const DAYS = ['일', '월', '화', '수', '목', '금', '토']
 const JUNE_2026 = [
@@ -37,37 +22,25 @@ export default function DateSelect() {
 
   const handleDayClick = (day) => {
     if (!day) return
-    if (!departDay || selectingReturn === false) {
-      setDepartDay(day)
-      setReturnDay(null)
-      setSelectingReturn(true)
+    if (!departDay || !selectingReturn) {
+      setDepartDay(day); setReturnDay(null); setSelectingReturn(true)
     } else {
-      if (day > departDay) {
-        setReturnDay(day)
-        setSelectingReturn(false)
-      } else {
-        setDepartDay(day)
-        setReturnDay(null)
-      }
+      if (day > departDay) { setReturnDay(day); setSelectingReturn(false) }
+      else { setDepartDay(day); setReturnDay(null) }
     }
   }
 
-  const isInRange = (day) => {
-    if (!departDay || !returnDay || !day) return false
-    return day > departDay && day < returnDay
-  }
-
+  const isInRange = (day) => departDay && returnDay && day && day > departDay && day < returnDay
   const isDepart = (day) => day === departDay
   const isReturn = (day) => day === returnDay
 
-  const getDayStyle = (day) => {
-    if (!day) return 'opacity-0'
+  const getDayBg = (day) => {
+    if (!day) return ''
     if (isDepart(day) || isReturn(day)) return 'bg-[#132968]'
     if (isInRange(day)) return 'bg-[#e9f3ff]'
     return ''
   }
-
-  const getDayTextColor = (day) => {
+  const getDayText = (day) => {
     if (!day) return 'text-transparent'
     if (isDepart(day) || isReturn(day)) return 'text-white'
     return 'text-black'
@@ -84,40 +57,38 @@ export default function DateSelect() {
 
       <div className="mt-[113px] px-[16px] pb-[24px] flex flex-col gap-[24px]">
         <div className="flex flex-col gap-[10px]">
-          <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[30px]">
-            <div className="flex items-center gap-[4px]">
-              <img src={imgCircle} className="size-[24px]" alt="" />
+          <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
+            <div className="flex items-center gap-[8px]">
+              <Icon name="trip_origin" size={24} color="#132968" />
               <span className="text-[#132968] text-[14px] font-semibold">파리 (CDG)</span>
             </div>
-            <img src={imgSwap} className="size-[24px]" alt="" />
+            <Icon name="swap_vert" size={24} color="#132968" />
           </div>
-          <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[30px]">
-            <div className="flex items-center gap-[4px]">
-              <img src={imgLocation} className="size-[24px]" alt="" />
-              <span className="text-[#6f7584] text-[14px] font-semibold">어디로?</span>
-            </div>
+          <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[16px] gap-[8px]">
+            <Icon name="location_on" size={24} color="#6f7584" />
+            <span className="text-[#6f7584] text-[14px] font-semibold">어디로?</span>
           </div>
 
           <div className="flex gap-[10px]">
-            <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[10px] flex-1">
-              <img src={imgCalendar} className="size-[24px] mr-[4px]" alt="" />
+            <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[10px] flex-1 gap-[4px]">
+              <Icon name="calendar_month" size={24} color="#6f7584" />
               <span className="text-[#6f7584] text-[14px] font-semibold">
                 {departDay ? `6월 ${departDay}일` : '출발일'}
               </span>
             </div>
             <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[10px] flex-1">
               <div className="flex items-center gap-[4px]">
-                <img src={imgCalendar} className="size-[24px]" alt="" />
+                <Icon name="calendar_month" size={24} color="#6f7584" />
                 <span className="text-[#6f7584] text-[14px] font-semibold">
                   {returnDay ? `6월 ${returnDay}일` : '도착일'}
                 </span>
               </div>
-              <img src={imgClose} className="size-[24px]" alt="" />
+              <Icon name="close" size={24} color="#6f7584" />
             </div>
           </div>
 
-          <div className="border border-[#d5d5d5] h-[48px] rounded-[8px] flex items-center justify-between px-[30px]">
-            <div className="flex flex-col gap-[4px]">
+          <div className="border border-[#d5d5d5] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
+            <div className="flex flex-col gap-[2px]">
               <span className="text-[#132968] text-[14px] font-semibold">날짜 유연하게 보기</span>
               <span className="text-[#6f7584] text-[12px]">날짜별 최저가 달력으로 탐색</span>
             </div>
@@ -131,8 +102,8 @@ export default function DateSelect() {
         </div>
 
         <div className="flex flex-col">
-          <div className="bg-[#fff7ec] border-2 border-[#d5d5d5] border-b-0 rounded-tl-[8px] rounded-tr-[8px] h-[48px] flex items-center px-[30px]">
-            <img src={imgCalendar2} className="size-[24px] mr-[4px]" alt="" />
+          <div className="bg-[#fff7ec] border-2 border-[#d5d5d5] border-b-0 rounded-tl-[8px] rounded-tr-[8px] h-[48px] flex items-center px-[16px] gap-[8px]">
+            <Icon name="calendar_month" size={24} color="#fa6b6b" />
             <div className="flex flex-col">
               <span className="text-[#d5d5d5] text-[12px]">가는 날</span>
               <span className="text-[#fa6b6b] text-[14px] font-semibold">
@@ -146,10 +117,10 @@ export default function DateSelect() {
               <span className="text-[#132968] text-[16px] font-semibold">2026년 6월</span>
               <div className="flex">
                 <button className="size-[48px] flex items-center justify-center">
-                  <img src={imgChevBwd} className="size-[24px]" alt="" />
+                  <Icon name="chevron_left" size={24} color="#132968" />
                 </button>
                 <button className="size-[48px] flex items-center justify-center">
-                  <img src={imgChevFwd} className="size-[24px]" alt="" />
+                  <Icon name="chevron_right" size={24} color="#132968" />
                 </button>
               </div>
             </div>
@@ -165,13 +136,10 @@ export default function DateSelect() {
             {JUNE_2026.map((week, wi) => (
               <div key={wi} className="flex">
                 {week.map((day, di) => (
-                  <button
-                    key={di}
-                    onClick={() => handleDayClick(day)}
-                    className={`flex-1 flex items-center justify-center size-[48px] p-[4px]`}
-                  >
-                    <div className={`size-[41px] rounded-full flex items-center justify-center relative ${getDayStyle(day)}`}>
-                      <span className={`text-[10px] font-semibold z-10 ${getDayTextColor(day)}`}>{day || ''}</span>
+                  <button key={di} onClick={() => handleDayClick(day)}
+                    className="flex-1 flex items-center justify-center size-[48px] p-[4px]">
+                    <div className={`size-[41px] rounded-full flex items-center justify-center relative ${getDayBg(day)}`}>
+                      <span className={`text-[10px] font-semibold z-10 ${getDayText(day)}`}>{day || ''}</span>
                     </div>
                   </button>
                 ))}
@@ -179,9 +147,9 @@ export default function DateSelect() {
             ))}
           </div>
 
-          <div className="bg-[#f1f2f6] border-2 border-[#d5d5d5] border-t-0 rounded-bl-[8px] rounded-br-[8px] h-[48px] flex items-center justify-between px-[30px]">
-            <div className="flex items-center gap-[4px]">
-              <img src={imgCalendar} className="size-[24px]" alt="" />
+          <div className="bg-[#f1f2f6] border-2 border-[#d5d5d5] border-t-0 rounded-bl-[8px] rounded-br-[8px] h-[48px] flex items-center justify-between px-[16px]">
+            <div className="flex items-center gap-[8px]">
+              <Icon name="calendar_month" size={24} color="#6f7584" />
               <div className="flex flex-col">
                 <span className="text-[#d5d5d5] text-[12px]">오는 날</span>
                 <span className="text-[#132968] text-[14px] font-semibold">
@@ -197,26 +165,24 @@ export default function DateSelect() {
           </div>
         </div>
 
-        <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[30px]">
-          <div className="flex items-center gap-[4px]">
-            <img src={imgPerson} className="size-[24px]" alt="" />
+        <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
+          <div className="flex items-center gap-[8px]">
+            <Icon name="person" size={24} color="#132968" />
             <span className="text-[#132968] text-[14px] font-semibold">1 성인</span>
           </div>
           <div className="flex items-center">
             <button className="size-[48px] flex items-center justify-center">
-              <img src={imgMinus} className="size-[24px]" alt="-" />
+              <Icon name="do_not_disturb_on" size={24} color="#6b7281" />
             </button>
             <span className="text-[14px] font-semibold">1</span>
             <button className="size-[48px] flex items-center justify-center">
-              <img src={imgPlus} className="size-[24px]" alt="+" />
+              <Icon name="add_circle" size={24} color="#6b7281" />
             </button>
           </div>
         </div>
 
-        <button
-          onClick={() => navigate('/compare')}
-          className="bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full"
-        >
+        <button onClick={() => navigate('/compare')}
+          className="bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full">
           <span className="text-white text-[14px] font-medium">검색 Omio</span>
         </button>
       </div>

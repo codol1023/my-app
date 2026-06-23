@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Icon from '../components/Icon'
 
-const imgBack = "/assets/f4409b2a-af79-40c8-b4f3-71ca698148b1.png"
-const imgChevFwd = "/assets/c8273399-f323-4c54-844d-c0fb0d74ad81.png"
-const imgChevBwd = "/assets/0b5df898-c22e-4b20-b178-2a30cc1e7fb1.png"
-const imgArrowCTA = "/assets/550185c4-b488-40d9-8da0-059fa59c621e.png"
+
+
+
+
 
 const PRICE_DATA = {
   전체: {
@@ -126,7 +127,7 @@ export default function FlexibleDate() {
       {/* Nav Header */}
       <div style={{ position: 'absolute', top: 53, left: 0, right: 0, height: 60, background: '#132968', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px' }}>
         <button onClick={() => navigate(-1)} style={{ width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>
-          <img src={imgBack} style={{ width: 24, height: 24 }} alt="back" />
+          <Icon name="arrow_back_ios_new" size={24} color="white" />
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'white', fontSize: 16, fontWeight: 600 }}>
           <span>파리</span>
@@ -250,7 +251,7 @@ export default function FlexibleDate() {
       <button onClick={() => navigate('/compare')}
         style={{ position: 'absolute', top: 770, left: 17, width: 370, height: 48, background: '#fa6b6b', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, cursor: 'pointer', border: 'none' }}>
         <span style={{ fontSize: 14, fontWeight: 500, color: 'white' }}>{ctaText}</span>
-        <img src={imgArrowCTA} style={{ width: 20, height: 20 }} alt="" />
+        <Icon name="arrow_forward" size={20} color="white" />
       </button>
 
       {/* Bottom Nav */}

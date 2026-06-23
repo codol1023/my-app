@@ -1,11 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
-
-const imgBack = "/assets/5a5b516c-4ac1-4df0-bebc-b3359bd73b61.png"
-const imgShare = "/assets/904fbc4c-986a-41d6-9ddb-46d3853b94b0.png"
-const imgArrow = "/assets/550185c4-b488-40d9-8da0-059fa59c621e.png"
-const imgChevFwd = "/assets/2634baac-2486-4731-9630-64491c9b06d6.png"
+import Icon from '../components/Icon'
 
 const DATES = [
   { day: '토', date: 13, price: 110, highlight: 'expensive' },
@@ -21,7 +17,6 @@ const DATES = [
   { day: '화', date: 23, price: 112 },
 ]
 
-// 날짜별 교통편 데이터
 const TRANSPORT_BY_DATE = {
   13: { flight: { price: 110000, count: '9편',  duration: '1h 50m' }, train: { price: 138000, count: '6편', duration: '6h 25m' }, bus: { price: 58000, count: '4편', duration: '14h 50m' } },
   14: { flight: { price: 118000, count: '10편', duration: '1h 50m' }, train: { price: 145000, count: '7편', duration: '6h 25m' }, bus: { price: 62000, count: '4편', duration: '14h 50m' } },
@@ -39,10 +34,7 @@ const TRANSPORT_BY_DATE = {
 function getBadge(key, data) {
   const prices = { flight: data.flight.price, train: data.train.price, bus: data.bus.price }
   const min = Math.min(...Object.values(prices))
-  const max = Math.min(prices.flight, prices.train) // 가장 빠름은 항공/기차 중 짧은 것
-  if (key === 'flight' && prices.flight === min) return { text: '가장 저렴', color: 'bg-[#eff6ff] text-[#006eb5]' }
-  if (key === 'train' && prices.train === min) return { text: '가장 저렴', color: 'bg-[#eff6ff] text-[#006eb5]' }
-  if (key === 'bus'   && prices.bus   === min) return { text: '가장 저렴', color: 'bg-[#e6f5e8] text-[#008026]' }
+  if (prices[key] === min) return { text: '가장 저렴', color: 'bg-[#eff6ff] text-[#006eb5]' }
   if (key === 'flight') return { text: '가장 빠름', color: 'bg-[#e6f5e8] text-[#008026]' }
   return null
 }
@@ -53,7 +45,6 @@ export default function Compare() {
   const [selectedTransport, setSelectedTransport] = useState(null)
 
   const data = TRANSPORT_BY_DATE[selectedDate]
-
   const TRANSPORTS = [
     { id: 'flight', name: '항공', route: '/departure',       ...data.flight },
     { id: 'train',  name: '기차', route: '/departure-train', ...data.train  },
@@ -71,7 +62,7 @@ export default function Compare() {
 
       <div className="absolute bg-[#132968] left-0 right-0 top-[53px] h-[60px] flex items-center justify-between px-[16px]">
         <button onClick={() => navigate(-1)} className="size-[48px] flex items-center justify-center">
-          <img src={imgBack} className="size-[24px]" alt="뒤로" />
+          <Icon name="arrow_back_ios_new" size={24} color="white" />
         </button>
         <p className="text-white text-[16px] font-semibold">교통편 비교</p>
         <div className="flex items-center">
@@ -79,17 +70,17 @@ export default function Compare() {
             <span className="text-white text-[12px] font-semibold">수정</span>
           </div>
           <button className="size-[48px] flex items-center justify-center">
-            <img src={imgShare} className="size-[24px]" alt="공유" />
+            <Icon name="ios_share" size={24} color="white" />
           </button>
         </div>
       </div>
 
       <div className="mt-[113px] px-[16px] pb-[80px] flex flex-col gap-[40px]">
-        <div className="bg-[#f1f2f6] border border-[#d5d5d5] h-[50px] rounded-[8px] flex items-center justify-between px-[30px]">
+        <div className="bg-[#f1f2f6] border border-[#d5d5d5] h-[50px] rounded-[8px] flex items-center justify-between px-[16px]">
           <div>
             <div className="flex items-center gap-[4px]">
               <span className="text-[#132968] text-[16px] font-semibold">파리</span>
-              <img src={imgArrow} className="size-[24px]" alt="→" />
+              <Icon name="arrow_forward" size={20} color="#132968" />
               <span className="text-[#132968] text-[16px] font-semibold">바르셀로나 · 왕복</span>
             </div>
             <p className="text-[#6b7281] text-[14px]">성인 1명</p>
@@ -100,7 +91,6 @@ export default function Compare() {
         </div>
 
         <div className="flex flex-col gap-[56px]">
-          {/* 날짜 스크롤 */}
           <div className="flex flex-col gap-[8px]">
             <div className="flex items-center gap-[4px]">
               <div className="size-[8px] rounded-full bg-[#afb8c5]" />
@@ -109,23 +99,17 @@ export default function Compare() {
             <div className="overflow-x-auto">
               <div className="flex gap-[5px] w-max">
                 {DATES.map((d) => (
-                  <button
-                    key={d.date}
+                  <button key={d.date}
                     onClick={() => { setSelectedDate(d.date); setSelectedTransport(null) }}
                     className={`size-[48px] flex flex-col items-center justify-center rounded-[8px] border-2 flex-shrink-0
-                      ${d.date === selectedDate
-                        ? 'bg-[#132968] border-[#132968]'
+                      ${d.date === selectedDate ? 'bg-[#132968] border-[#132968]'
                         : d.highlight === 'expensive' ? 'border-[#fd3235]'
                         : d.highlight === 'cheap'     ? 'border-[#008026]'
                         : 'border-[#e5e7ee]'}`}
                   >
                     <span className={`text-[10px] font-normal ${d.date === selectedDate ? 'text-[#d8d9dd]' : 'text-[#dadbe0]'}`}>{d.day}</span>
                     <span className={`text-[12px] font-semibold ${d.date === selectedDate ? 'text-white' : 'text-[#132968]'}`}>{d.date}</span>
-                    <span className={`text-[10px] font-normal
-                      ${d.date === selectedDate ? 'text-[#d8d9dd]'
-                        : d.highlight === 'expensive' ? 'text-[#fd3235]'
-                        : d.highlight === 'cheap'     ? 'text-[#008026]'
-                        : 'text-[#c24c00]'}`}>
+                    <span className={`text-[10px] font-normal ${d.date === selectedDate ? 'text-[#d8d9dd]' : d.highlight === 'expensive' ? 'text-[#fd3235]' : d.highlight === 'cheap' ? 'text-[#008026]' : 'text-[#c24c00]'}`}>
                       ₩{d.price}
                     </span>
                   </button>
@@ -134,14 +118,11 @@ export default function Compare() {
             </div>
           </div>
 
-          {/* 교통편 카드 */}
           <div className="flex flex-col gap-[24px]">
             {TRANSPORTS.map((t) => {
               const badge = getBadge(t.id, data)
               return (
-                <button
-                  key={t.id}
-                  onClick={() => handleTransportClick(t)}
+                <button key={t.id} onClick={() => handleTransportClick(t)}
                   className={`bg-white border-2 rounded-[8px] px-[20px] py-[12px] flex items-center justify-between w-full transition-colors
                     ${selectedTransport === t.id ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}
                 >
@@ -169,7 +150,7 @@ export default function Compare() {
                       </div>
                     </div>
                   </div>
-                  <img src={imgChevFwd} className="size-[20px]" alt="" />
+                  <Icon name="chevron_right" size={20} color="#afb8c5" />
                 </button>
               )
             })}
@@ -180,13 +161,10 @@ export default function Compare() {
           <p className="text-[#afb8c5] text-[12px]">카드 탭 → 전체 편 리스트로 이동</p>
           <button
             onClick={() => { const t = TRANSPORTS.find(t => t.id === selectedTransport); if (t) navigate(`${t.route}?date=${selectedDate}`) }}
-            className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors
-              ${selectedTransport ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}
+            className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors ${selectedTransport ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}
           >
             <span className="text-white text-[14px] font-medium">
-              {selectedTransport
-                ? `${TRANSPORTS.find(t => t.id === selectedTransport)?.name} 편 보기`
-                : '출발 수단을 선택해주세요'}
+              {selectedTransport ? `${TRANSPORTS.find(t => t.id === selectedTransport)?.name} 편 보기` : '출발 수단을 선택해주세요'}
             </span>
           </button>
         </div>

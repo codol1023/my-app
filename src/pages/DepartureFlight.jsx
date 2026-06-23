@@ -1,13 +1,8 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
+import Icon from '../components/Icon'
 
-const imgBack = "/assets/742a60c5-4905-4d96-b93b-83c13794dbfd.png"
-const imgShare = "/assets/fbc6d178-7d9a-427b-af4f-36457ef79fae.png"
-const imgArrow = "/assets/5508c0d6-9325-4cc0-a5b6-5af21a64710d.png"
-const imgChevFwd = "/assets/70129f0e-45a3-4d8d-8628-62de71e52f95.png"
-
-// 날짜별 항공편 데이터 (최저가 = Compare의 flight.price와 일치)
 const FLIGHTS_BY_DATE = {
   13: [
     { id: 1, dep: '07:10', arr: '09:00', airline: 'Vueling',    price: 110000, tags: ['직항', '최저가'] },
@@ -75,13 +70,10 @@ export default function DepartureFlight() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const date = parseInt(searchParams.get('date') ?? '15', 10)
-
   const [selected, setSelected] = useState(null)
   const [filter, setFilter] = useState('전체')
   const filters = ['전체', '직항만', '오전 출발', '가격순']
-
   const flights = FLIGHTS_BY_DATE[date] ?? FLIGHTS_BY_DATE[15]
-  const dateLabel = `6월 ${date}일 · 파리 → 바르셀로나`
 
   return (
     <div className="relative w-full min-h-svh bg-white">
@@ -89,7 +81,7 @@ export default function DepartureFlight() {
 
       <div className="absolute bg-[#132968] left-0 right-0 top-[53px] h-[60px] flex items-center justify-between px-[16px]">
         <button onClick={() => navigate(-1)} className="size-[48px] flex items-center justify-center">
-          <img src={imgBack} className="size-[24px]" alt="뒤로" />
+          <Icon name="arrow_back_ios_new" size={24} color="white" />
         </button>
         <p className="text-white text-[16px] font-semibold">교통편 비교</p>
         <div className="flex items-center">
@@ -97,16 +89,16 @@ export default function DepartureFlight() {
             <span className="text-white text-[12px] font-semibold">수정</span>
           </div>
           <button className="size-[48px] flex items-center justify-center">
-            <img src={imgShare} className="size-[24px]" alt="공유" />
+            <Icon name="ios_share" size={24} color="white" />
           </button>
         </div>
       </div>
 
       <div className="mt-[113px] px-[16px] pb-[100px] flex flex-col gap-[10px]">
-        <div className="bg-[#132968] border border-[#d5d5d5] h-[50px] rounded-[8px] flex items-center justify-between px-[30px]">
+        <div className="bg-[#132968] border border-[#d5d5d5] h-[50px] rounded-[8px] flex items-center justify-between px-[16px]">
           <div>
             <p className="text-white text-[16px] font-semibold">항공 출발편</p>
-            <p className="text-[#6b7281] text-[14px]">{dateLabel}</p>
+            <p className="text-[#6b7281] text-[14px]">6월 {date}일 · 파리 → 바르셀로나</p>
           </div>
           <div className="bg-[#3a4a67] h-[20px] px-[12px] rounded-[4px] flex items-center">
             <span className="text-white text-[10px] font-semibold">{flights.length}편</span>
@@ -132,7 +124,7 @@ export default function DepartureFlight() {
                 <div className="flex items-center gap-[8px]">
                   <div className="flex items-center gap-[4px]">
                     <span className="text-[16px] font-semibold text-black">{f.dep}</span>
-                    <img src={imgArrow} className="size-[20px]" alt="→" />
+                    <Icon name="arrow_forward" size={20} color="#132968" />
                     <span className="text-[16px] font-semibold text-black">{f.arr}</span>
                   </div>
                   <div className="bg-[#f2f3f5] h-[28px] px-[12px] rounded-[4px] flex items-center">
@@ -163,8 +155,7 @@ export default function DepartureFlight() {
 
       <div className="absolute bottom-0 left-0 right-0 px-[16px] pb-[16px] pt-[8px] bg-white">
         <button onClick={() => selected && navigate('/return')}
-          className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors
-            ${selected ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}>
+          className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors ${selected ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}>
           <span className="text-white text-[14px] font-medium">
             {selected ? '이 편으로 출발 선택' : '편을 선택해주세요'}
           </span>

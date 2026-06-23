@@ -1,10 +1,11 @@
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+import Icon from '../components/Icon'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
 
-const imgBack = "/assets/742a60c5-4905-4d96-b93b-83c13794dbfd.png"
-const imgShare = "/assets/fbc6d178-7d9a-427b-af4f-36457ef79fae.png"
-const imgArrow = "/assets/5508c0d6-9325-4cc0-a5b6-5af21a64710d.png"
+
+
+
 
 // 날짜별 기차편 데이터 (최저가 = Compare의 train.price와 일치)
 const TRAIN_BY_DATE = {
@@ -156,7 +157,7 @@ export default function DepartureTrainBus() {
 
       <div className="absolute bg-[#132968] left-0 right-0 top-[53px] h-[60px] flex items-center justify-between px-[16px]">
         <button onClick={() => navigate(-1)} className="size-[48px] flex items-center justify-center">
-          <img src={imgBack} className="size-[24px]" alt="뒤로" />
+          <Icon name="arrow_back_ios_new" size={24} color="white" />
         </button>
         <p className="text-white text-[16px] font-semibold">교통편 비교</p>
         <div className="flex items-center">
@@ -164,7 +165,7 @@ export default function DepartureTrainBus() {
             <span className="text-white text-[12px] font-semibold">수정</span>
           </div>
           <button className="size-[48px] flex items-center justify-center">
-            <img src={imgShare} className="size-[24px]" alt="공유" />
+            <Icon name="ios_share" size={24} color="white" />
           </button>
         </div>
       </div>
@@ -199,7 +200,7 @@ export default function DepartureTrainBus() {
                 <div className="flex items-center gap-[8px]">
                   <div className="flex items-center gap-[4px]">
                     <span className="text-[16px] font-semibold text-black">{o.dep}</span>
-                    <img src={imgArrow} className="size-[20px]" alt="→" />
+                    <Icon name="arrow_forward" size={20} color="#132968" />
                     <span className="text-[16px] font-semibold text-black">{o.arr}</span>
                   </div>
                   <div className="bg-[#f2f3f5] h-[28px] px-[12px] rounded-[4px] flex items-center">
