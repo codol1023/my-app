@@ -183,8 +183,9 @@ export default function FlexibleDate() {
               return (
                 <div key={d} onClick={() => setSelectedDay(d)}
                   className="flex flex-col items-center justify-center h-[48px] cursor-pointer relative">
-                  <div className="absolute size-[42px] rounded-full"
-                    style={{ background: isSel ? '#132968' : price !== undefined ? bgColor(cls) : '#f5f5f5' }} />
+                  {isSel && (
+                    <div className="absolute size-[42px] rounded-full bg-[#132968]" />
+                  )}
                   <span className="relative z-10 text-[12px] font-semibold mb-[2px]"
                     style={{ color: isSel ? 'white' : price !== undefined ? textColor(cls) : '#ccc' }}>{d}</span>
                   {price !== undefined && (

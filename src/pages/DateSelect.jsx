@@ -57,7 +57,7 @@ export default function DateSelect() {
 
       <div className="mt-[113px] px-[16px] pb-[24px] flex flex-col gap-[24px]">
         <div className="flex flex-col gap-[10px]">
-          <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
+          <div className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
             <div className="flex items-center gap-[8px]">
               <Icon name="trip_origin" size={24} color="#132968" />
               <span className="text-[#132968] text-[14px] font-semibold">파리 (CDG)</span>
@@ -165,7 +165,7 @@ export default function DateSelect() {
           </div>
         </div>
 
-        <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
+        <div className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
           <div className="flex items-center gap-[8px]">
             <Icon name="person" size={24} color="#132968" />
             <span className="text-[#132968] text-[14px] font-semibold">1 성인</span>

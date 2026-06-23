@@ -8,6 +8,14 @@ export default function Search() {
   const navigate = useNavigate()
   const [flexDate, setFlexDate] = useState(false)
   const [passengers, setPassengers] = useState(1)
+  const [origin, setOrigin] = useState('파리 (CDG)')
+  const [destination, setDestination] = useState('')
+
+  const swap = () => {
+    const tmp = origin
+    setOrigin(destination)
+    setDestination(tmp)
+  }
 
   return (
     <div className="relative w-full min-h-svh bg-white">
@@ -23,34 +31,48 @@ export default function Search() {
       <div className="absolute left-[16px] right-[16px] top-[325px] flex flex-col gap-[24px]">
         <div className="flex flex-col gap-[10px]">
           <div className="flex flex-col gap-[10px]">
+            {/* 출발지 */}
             <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
-              <div className="flex items-center gap-[8px]">
+              <div className="flex items-center gap-[8px] flex-1">
                 <Icon name="trip_origin" size={24} color="#132968" />
-                <span className="text-[#132968] text-[14px] font-semibold">파리 (CDG)</span>
+                <input
+                  value={origin}
+                  onChange={e => setOrigin(e.target.value)}
+                  placeholder="출발지 입력"
+                  className="bg-transparent text-[#132968] text-[14px] font-semibold outline-none flex-1 min-w-0"
+                />
               </div>
-              <Icon name="swap_vert" size={24} color="#132968" />
+              <button onClick={swap} className="cursor-pointer ml-[8px]">
+                <Icon name="swap_vert" size={24} color="#132968" />
+              </button>
             </div>
-            <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[16px]">
-              <div className="flex items-center gap-[8px]">
-                <Icon name="location_on" size={24} color="#6f7584" />
-                <span className="text-[#6f7584] text-[14px] font-semibold">어디로?</span>
-              </div>
+            {/* 목적지 */}
+            <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[16px] gap-[8px]">
+              <Icon name="location_on" size={24} color={destination ? '#132968' : '#6f7584'} />
+              <input
+                value={destination}
+                onChange={e => setDestination(e.target.value)}
+                placeholder="어디로?"
+                className="bg-transparent text-[14px] font-semibold outline-none flex-1 min-w-0 placeholder-[#6f7584]"
+                style={{ color: destination ? '#132968' : undefined }}
+              />
             </div>
           </div>
 
           <div className="flex gap-[10px]">
             <button onClick={() => navigate('/date-select')}
-              className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[10px] flex-1 gap-[4px]">
+              className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[10px] flex-1 gap-[4px]">
               <Icon name="calendar_month" size={24} color="#6f7584" />
               <span className="text-[#6f7584] text-[14px] font-semibold">출발일</span>
             </button>
-            <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[10px] flex-1">
+            <button
+              className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[10px] flex-1">
               <div className="flex items-center gap-[4px]">
                 <Icon name="calendar_month" size={24} color="#6f7584" />
                 <span className="text-[#6f7584] text-[14px] font-semibold">도착일</span>
               </div>
               <Icon name="close" size={24} color="#6f7584" />
-            </div>
+            </button>
           </div>
 
           <div className="border border-[#d5d5d5] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
@@ -60,7 +82,7 @@ export default function Search() {
             </div>
             <button
               onClick={() => { setFlexDate(!flexDate); if (!flexDate) navigate('/flexible') }}
-              className={`h-[34px] w-[66px] rounded-full flex items-center px-[1px] transition-all ${flexDate ? 'bg-[#fa6b6b] justify-end' : 'bg-[#d9d9d9] justify-start'}`}
+              className={`cursor-pointer h-[34px] w-[66px] rounded-full flex items-center px-[1px] transition-all ${flexDate ? 'bg-[#fa6b6b] justify-end' : 'bg-[#d9d9d9] justify-start'}`}
             >
               <div className="size-[32px] rounded-full bg-white shadow" />
             </button>
@@ -72,11 +94,11 @@ export default function Search() {
               <span className="text-[#132968] text-[14px] font-semibold">{passengers} 성인</span>
             </div>
             <div className="flex items-center">
-              <button onClick={() => setPassengers(Math.max(1, passengers - 1))} className="size-[48px] flex items-center justify-center">
+              <button onClick={() => setPassengers(Math.max(1, passengers - 1))} className="cursor-pointer size-[48px] flex items-center justify-center">
                 <Icon name="do_not_disturb_on" size={24} color="#6b7281" />
               </button>
               <span className="text-[14px] font-semibold w-[16px] text-center">{passengers}</span>
-              <button onClick={() => setPassengers(passengers + 1)} className="size-[48px] flex items-center justify-center">
+              <button onClick={() => setPassengers(passengers + 1)} className="cursor-pointer size-[48px] flex items-center justify-center">
                 <Icon name="add_circle" size={24} color="#6b7281" />
               </button>
             </div>
@@ -84,7 +106,7 @@ export default function Search() {
         </div>
 
         <button onClick={() => navigate('/compare')}
-          className="bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full">
+          className="cursor-pointer bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full">
           <span className="text-white text-[14px] font-medium">검색 Omio</span>
         </button>
       </div>
