@@ -6,6 +6,7 @@ import Compare from './pages/Compare'
 import DepartureFlight from './pages/DepartureFlight'
 import DepartureTrainBus from './pages/DepartureTrainBus'
 import ReturnFlight from './pages/ReturnFlight'
+import ReturnFlightList from './pages/ReturnFlightList'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/departure-train" element={<DepartureTrainBus />} />
           <Route path="/departure-bus" element={<DepartureTrainBus />} />
           <Route path="/return" element={<ReturnFlight />} />
+          <Route path="/return-list" element={<ReturnFlightList />} />
         </Routes>
       </div>
     </BrowserRouter>
