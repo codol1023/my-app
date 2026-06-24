@@ -43,7 +43,7 @@ export default function DepartureFlight() {
   const filters = ['전체', '직항만', '오전 출발', '가격순']
 
   return (
-    <div className="flex flex-col bg-white" style={{ height: '100svh' }}>
+    <div className="flex flex-col bg-white" style={{ height: '100%' }}>
 
       {/* ── 고정 헤더 ── */}
       <div className="flex-shrink-0 pt-[53px]">

@@ -75,7 +75,7 @@ export default function FlexibleDate() {
   const [view, setView] = useState('calendar')
   const [year, setYear] = useState(2026)
   const [month, setMonth] = useState(6)
-  const [selectedDay, setSelectedDay] = useState(15)
+  const [selectedDay, setSelectedDay] = useState(null)
 
   const data = PRICE_DATA[filter]
   const lowest = lowestInMonth(year, month, filter)
@@ -106,7 +106,7 @@ export default function FlexibleDate() {
   const BAR_H = 160
 
   return (
-    <div className="flex flex-col bg-white" style={{ height: '100svh' }}>
+    <div className="flex flex-col bg-white" style={{ height: '100%' }}>
       <StatusBar />
 
       {/* ── 고정 헤더 ── */}
@@ -218,7 +218,7 @@ export default function FlexibleDate() {
       </div>
 
       {/* Graph View */}
-      <div className={`h-[351px] border border-[#d5d5d5] rounded-[8px] bg-white overflow-hidden flex flex-col transition-opacity duration-200 ${view === 'graph' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none hidden'}`}>
+      <div className={`h-[351px] border border-[#d5d5d5] rounded-[8px] bg-white overflow-hidden flex flex-col transition-opacity duration-200 ${view === 'graph' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         <div className="px-[16px] pt-[16px] flex-shrink-0">
           <div className="text-[14px] font-semibold text-[#132968] mb-[4px]">파리 → 바르셀로나 · {year}년 {month}월</div>
           <div className="text-[11px] text-[#6b7281]">날짜별 최저가 추이 (단위: 천원) · 좌우로 스크롤</div>

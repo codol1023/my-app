@@ -43,7 +43,7 @@ export default function DepartureTrainBus() {
   const filters = ['전체', '직항만', '오전 출발', '가격순']
 
   return (
-    <div className="flex flex-col bg-white" style={{ height: '100svh' }}>
+    <div className="flex flex-col bg-white" style={{ height: '100%' }}>
       <div className="flex-shrink-0 pt-[53px]">
         <StatusBar />
         <div className="bg-[#132968] h-[60px] flex items-center justify-between px-[16px]">

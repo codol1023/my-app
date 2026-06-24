@@ -58,7 +58,7 @@ export default function ReturnFlight() {
   }
 
   return (
-    <div className="flex flex-col bg-white" style={{ height: '100svh' }}>
+    <div className="flex flex-col bg-white" style={{ height: '100%' }}>
 
       {/* ── 고정 헤더 ── */}
       <div className="flex-shrink-0 pt-[53px]">
@@ -112,7 +112,7 @@ export default function ReturnFlight() {
         </div>
 
         {/* 리턴편 선택 박스 */}
-        <div className="border-2 border-[#132968] rounded-[8px] overflow-hidden">
+        <div className="border-2 border-[#132968] rounded-[8px]">
           <div className="bg-[#132968] flex items-center justify-between px-[12px] py-[10px]">
             <p className="text-white text-[16px] font-semibold">리턴편 선택</p>
             <div className="bg-[#3a4a67] rounded-[4px] h-[28px] px-[12px] flex items-center gap-[4px]">

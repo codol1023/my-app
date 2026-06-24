@@ -44,13 +44,13 @@ export default function DateSelect() {
   }
 
   return (
-    <div className="flex flex-col bg-white" style={{ height: '100svh' }}>
+    <div className="flex flex-col bg-white" style={{ height: '100%' }}>
       <StatusBar />
 
       {/* ── 스크롤 영역 ── */}
       <div className="flex-1 overflow-y-auto">
         {/* 파란 헤더 */}
-        <div className="bg-[#132968] pt-[16px] pb-[20px] px-[20px]">
+        <div className="bg-[#132968] pt-[69px] pb-[20px] px-[20px]">
           <p className="text-white text-[16px] font-semibold">어디로 정하시겠습니까, 가영?</p>
           <p className="text-[#f1f2f6] text-[12px]">기차 · 버스 · 항공을 한눈에</p>
         </div>

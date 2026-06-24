@@ -14,13 +14,13 @@ export default function Search() {
   const swap = () => { const t = origin; setOrigin(destination); setDestination(t) }
 
   return (
-    <div className="flex flex-col bg-white" style={{ height: '100svh' }}>
+    <div className="flex flex-col bg-white" style={{ height: '100%' }}>
       <StatusBar />
 
       {/* ── 스크롤 영역 ── */}
       <div className="flex-1 overflow-y-auto">
-        {/* 파란 헤더 배경 */}
-        <div className="bg-[#132968] pt-[16px] pb-[72px] px-[20px]">
+        {/* 파란 헤더 배경 — pt-[69px]로 StatusBar(53px) + 여백(16px) 확보 */}
+        <div className="bg-[#132968] pt-[69px] pb-[72px] px-[20px]">
           <p className="text-white text-[16px] font-semibold">어디로 정하시겠습니까, 가영?</p>
           <p className="text-[#f1f2f6] text-[12px] font-normal">기차 · 버스 · 항공을 한눈에</p>
         </div>
