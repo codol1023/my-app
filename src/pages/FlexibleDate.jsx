@@ -106,52 +106,60 @@ export default function FlexibleDate() {
   const BAR_H = 160
 
   return (
-    <div className="relative w-full bg-white pb-[56px]" style={{ minHeight: '100svh' }}>
+    <div className="flex flex-col bg-white" style={{ height: '100svh' }}>
       <StatusBar />
 
-      {/* Nav Header */}
-      <div className="absolute bg-[#132968] left-0 right-0 top-[53px] h-[60px] flex items-center justify-between px-[16px]">
-        <button onClick={() => navigate(-1)} className="size-[48px] flex items-center justify-center">
-          <Icon name="arrow_back_ios_new" size={24} color="white" />
-        </button>
-        <div className="flex items-center gap-[8px] text-white text-[16px] font-semibold">
-          <span>파리</span><span>↔</span><span>바르셀로나</span>
-        </div>
-        <div className="border border-white rounded-[4px] h-[24px] px-[8px] flex items-center cursor-pointer">
-          <span className="text-white text-[12px] font-semibold">수정</span>
-        </div>
-      </div>
-
-      {/* Filter Tabs */}
-      <div className="absolute top-[121px] left-[9px] flex gap-[7px]">
-        {['전체','항공','기차','버스'].map(f => (
-          <button key={f} onClick={() => { setFilter(f); setSelectedDay(null) }}
-            className={`h-[28px] px-[12px] rounded-full text-[12px] font-medium cursor-pointer
-              ${filter === f ? 'bg-[#132968] text-white border border-[#132968]' : 'border border-[#e5e7ee] text-[#6b7281] bg-transparent'}`}>
-            {f}
+      {/* ── 고정 헤더 ── */}
+      <div className="flex-shrink-0 pt-[53px]">
+        <div className="bg-[#132968] h-[60px] flex items-center justify-between px-[16px]">
+          <button onClick={() => navigate(-1)} className="cursor-pointer size-[48px] flex items-center justify-center">
+            <Icon name="arrow_back_ios_new" size={24} color="white" />
           </button>
-        ))}
-      </div>
+          <div className="flex items-center gap-[8px] text-white text-[16px] font-semibold">
+            <span>파리</span><span>↔</span><span>바르셀로나</span>
+          </div>
+          <div className="border border-white rounded-[4px] h-[24px] px-[8px] flex items-center cursor-pointer">
+            <span className="text-white text-[12px] font-semibold">수정</span>
+          </div>
+        </div>
 
-      {/* View Toggle */}
-      <div className="absolute top-[161px] left-[16px] right-[16px] h-[48px] bg-[#f2f3f5] rounded-[8px] flex items-center p-[5px] gap-[5px]">
-        {['calendar','graph'].map(v => (
-          <button key={v} onClick={() => setView(v)}
-            className={`flex-1 h-[38px] rounded-[8px] border border-[#e9eaed] text-[14px] cursor-pointer
-              ${view === v ? 'bg-white text-[#132968] font-semibold' : 'bg-transparent text-[#6b7281] font-medium'}`}>
-            {v === 'calendar' ? '달력 뷰' : '그래프 뷰'}
-          </button>
-        ))}
-      </div>
+        {/* Filter Tabs — gutter 8 */}
+        <div className="bg-white px-[16px] py-[10px] flex gap-[8px] border-b border-[#f0f0f0]">
+          {['전체','항공','기차','버스'].map(f => (
+            <button key={f} onClick={() => { setFilter(f); setSelectedDay(null) }}
+              className={`h-[28px] px-[12px] rounded-full text-[12px] font-medium cursor-pointer
+                ${filter === f ? 'bg-[#132968] text-white border border-[#132968]' : 'border border-[#e5e7ee] text-[#6b7281] bg-transparent'}`}>
+              {f}
+            </button>
+          ))}
+        </div>
 
-      {/* Price Info Bar */}
-      <div className="absolute top-[233px] left-[16px] right-[16px] h-[48px] bg-[#132968] rounded-[8px] flex items-center justify-between px-[20px]">
-        <span className="text-[#d9d9d9] text-[14px] font-medium">이번 달 최저가</span>
+        {/* View Toggle — gutter 8 */}
+        <div className="bg-white px-[16px] py-[8px]">
+          <div className="h-[48px] bg-[#f2f3f5] rounded-[8px] flex items-center p-[5px] gap-[8px]">
+            {['calendar','graph'].map(v => (
+              <button key={v} onClick={() => setView(v)}
+                className={`cursor-pointer flex-1 h-[38px] rounded-[8px] border border-[#e9eaed] text-[14px]
+                  ${view === v ? 'bg-white text-[#132968] font-semibold' : 'bg-transparent text-[#6b7281] font-medium'}`}>
+                {v === 'calendar' ? '달력 뷰' : '그래프 뷰'}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Price Info Bar */}
+        <div className="mx-[16px] mb-[8px] h-[48px] bg-[#132968] rounded-[8px] flex items-center justify-between px-[20px]">
+          <span className="text-[#d9d9d9] text-[14px] font-medium">이번 달 최저가</span>
         <span className="text-white text-[14px] font-bold">{lowest ?? '—'}</span>
       </div>
 
+      </div>{/* end fixed header */}
+
+      {/* ── 스크롤 영역 ── */}
+      <div className="flex-1 overflow-y-auto px-[16px] py-[12px] flex flex-col gap-[12px]">
+
       {/* Calendar View */}
-      <div className={`absolute top-[305px] left-[16px] right-[16px] transition-opacity duration-200 ${view === 'calendar' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+      <div className={`transition-opacity duration-200 ${view === 'calendar' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none absolute'}`}>
         <div className="border border-[#d5d5d5] rounded-[8px] overflow-hidden bg-white">
           <div className="flex items-center justify-between px-[16px] pt-[14px] pb-[4px]">
             <span className="text-[#132968] text-[16px] font-semibold">{year}년 {month}월</span>
@@ -210,7 +218,7 @@ export default function FlexibleDate() {
       </div>
 
       {/* Graph View */}
-      <div className={`absolute top-[305px] left-[16px] right-[16px] h-[351px] border border-[#d5d5d5] rounded-[8px] bg-white overflow-hidden flex flex-col transition-opacity duration-200 ${view === 'graph' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+      <div className={`h-[351px] border border-[#d5d5d5] rounded-[8px] bg-white overflow-hidden flex flex-col transition-opacity duration-200 ${view === 'graph' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none hidden'}`}>
         <div className="px-[16px] pt-[16px] flex-shrink-0">
           <div className="text-[14px] font-semibold text-[#132968] mb-[4px]">파리 → 바르셀로나 · {year}년 {month}월</div>
           <div className="text-[11px] text-[#6b7281]">날짜별 최저가 추이 (단위: 천원) · 좌우로 스크롤</div>
@@ -235,14 +243,14 @@ export default function FlexibleDate() {
         </div>
       </div>
 
-      {/* CTA Button — 달력 아래 여백 후 배치 */}
-      <div className="absolute top-[680px] left-[16px] right-[16px]">
-        <button onClick={() => navigate(`/compare${selectedDay ? `?date=${selectedDay}` : ''}`)}
-          className="w-full h-[48px] bg-[#fa6b6b] rounded-[8px] flex items-center justify-center gap-[4px] border-none cursor-pointer">
-          <span className="text-white text-[14px] font-medium">{ctaText}</span>
-          <Icon name="arrow_forward" size={20} color="white" />
-        </button>
-      </div>
+      {/* CTA Button */}
+      <button onClick={() => navigate(`/compare${selectedDay ? `?date=${selectedDay}` : ''}`)}
+        className="w-full h-[48px] bg-[#fa6b6b] rounded-[8px] flex items-center justify-center gap-[4px] border-none cursor-pointer">
+        <span className="text-white text-[14px] font-medium">{ctaText}</span>
+        <Icon name="arrow_forward" size={20} color="white" />
+      </button>
+
+      </div>{/* end scroll area */}
 
       <BottomNav />
     </div>

@@ -130,7 +130,7 @@ export default function Compare() {
               <span className="text-[#afb8c5] text-[12px] font-semibold">출발 날짜</span>
             </div>
             <div className="overflow-x-auto">
-              <div className="flex gap-[5px] w-max">
+              <div className="flex gap-[8px] w-max">
                 {DATES.map((d) => (
                   <button key={d.date}
                     onClick={() => { setSelectedDate(d.date); setSelectedTransport(null) }}
