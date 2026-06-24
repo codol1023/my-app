@@ -103,11 +103,15 @@ export default function Search() {
             </div>
           </div>
 
-          <button onClick={() => navigate('/compare')}
-            className="cursor-pointer bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full">
-            <span className="text-white text-[14px] font-medium">검색 Omio</span>
-          </button>
         </div>
+      </div>
+
+      {/* 검색 버튼 — BottomNav 바로 위 sticky */}
+      <div className="flex-shrink-0 px-[16px] pb-[8px] pt-[8px] bg-white border-t border-[#f0f0f0]">
+        <button onClick={() => navigate('/compare')}
+          className="cursor-pointer bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full">
+          <span className="text-white text-[14px] font-medium">검색 Omio</span>
+        </button>
       </div>
 
       <BottomNav />

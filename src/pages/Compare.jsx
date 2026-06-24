@@ -105,25 +105,29 @@ export default function Compare() {
   }
 
   return (
-    <div className="relative w-full min-h-svh bg-white">
+    <div className="flex flex-col bg-white" style={{ height: '100%' }}>
       <StatusBar />
 
-      <div className="absolute bg-[#132968] left-0 right-0 top-[53px] h-[60px] flex items-center justify-between px-[16px]">
-        <button onClick={() => navigate(-1)} className="size-[48px] flex items-center justify-center">
-          <Icon name="arrow_back_ios_new" size={24} color="white" />
-        </button>
-        <p className="text-white text-[16px] font-semibold">교통편 비교</p>
-        <div className="flex items-center">
-          <div className="border border-white rounded-[4px] h-[24px] px-[8px] flex items-center">
-            <span className="text-white text-[12px] font-semibold">수정</span>
-          </div>
-          <button className="size-[48px] flex items-center justify-center">
-            <Icon name="ios_share" size={24} color="white" />
+      {/* 고정 헤더 */}
+      <div className="flex-shrink-0 pt-[53px]">
+        <div className="bg-[#132968] h-[60px] flex items-center justify-between px-[16px]">
+          <button onClick={() => navigate(-1)} className="size-[48px] flex items-center justify-center">
+            <Icon name="arrow_back_ios_new" size={24} color="white" />
           </button>
+          <p className="text-white text-[16px] font-semibold">교통편 비교</p>
+          <div className="flex items-center">
+            <div className="border border-white rounded-[4px] h-[24px] px-[8px] flex items-center">
+              <span className="text-white text-[12px] font-semibold">수정</span>
+            </div>
+            <button className="size-[48px] flex items-center justify-center">
+              <Icon name="ios_share" size={24} color="white" />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="mt-[113px] px-[16px] pb-[80px] flex flex-col gap-[40px]">
+      {/* 스크롤 영역 */}
+      <div className="flex-1 overflow-y-auto px-[16px] py-[16px] flex flex-col gap-[24px]">
         <div className="bg-[#f1f2f6] border border-[#d5d5d5] h-[50px] rounded-[8px] flex items-center justify-between px-[16px]">
           <div>
             <div className="flex items-center gap-[4px]">
@@ -205,17 +209,18 @@ export default function Compare() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-[10px]">
-          <p className="text-[#afb8c5] text-[12px]">카드 탭 → 전체 편 리스트로 이동</p>
-          <button
-            onClick={() => { const t = TRANSPORTS.find(t => t.id === selectedTransport); if (t) navigate(`${t.route}?date=${selectedDate}&count=${parseInt(t.count)}&minprice=${t.price}`) }}
-            className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors ${selectedTransport ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}
-          >
-            <span className="text-white text-[14px] font-medium">
-              {selectedTransport ? `${TRANSPORTS.find(t => t.id === selectedTransport)?.name} 편 보기` : '출발 수단을 선택해주세요'}
-            </span>
-          </button>
-        </div>
+      </div>
+
+      {/* 고정 CTA */}
+      <div className="flex-shrink-0 px-[16px] pb-[16px] pt-[8px] bg-white border-t border-[#f0f0f0]">
+        <button
+          onClick={() => { const t = TRANSPORTS.find(t => t.id === selectedTransport); if (t) navigate(`${t.route}?date=${selectedDate}&count=${parseInt(t.count)}&minprice=${t.price}`) }}
+          className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors ${selectedTransport ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}
+        >
+          <span className="text-white text-[14px] font-medium">
+            {selectedTransport ? `${TRANSPORTS.find(t => t.id === selectedTransport)?.name} 편 보기` : '출발 수단을 선택해주세요'}
+          </span>
+        </button>
       </div>
     </div>
   )
