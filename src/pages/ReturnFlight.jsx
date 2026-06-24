@@ -106,7 +106,7 @@ export default function ReturnFlight() {
               <p className="text-[#00e275] text-[14px]">6/15(일) · Iberia · ₩79,000 · 10:30</p>
             </div>
           </div>
-          <button onClick={() => navigate(-1)} className="bg-white border border-[#bfd6ee] rounded-[4px] h-[20px] px-[10px] flex items-center">
+          <button onClick={() => navigate("/compare")} className="bg-white border border-[#bfd6ee] rounded-[4px] h-[20px] px-[10px] flex items-center">
             <span className="text-[#006eb5] text-[10px] font-semibold">변경</span>
           </button>
         </div>

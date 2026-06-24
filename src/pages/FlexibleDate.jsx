@@ -245,7 +245,7 @@ export default function FlexibleDate() {
 
       {/* CTA Button */}
       <button onClick={() => navigate(`/compare${selectedDay ? `?date=${selectedDay}` : ''}`)}
-        className="w-full h-[48px] bg-[#fa6b6b] rounded-[8px] flex items-center justify-center gap-[4px] border-none cursor-pointer">
+        className="w-full h-[48px] min-h-[48px] bg-[#fa6b6b] rounded-[8px] flex items-center justify-center gap-[4px] border-none cursor-pointer flex-shrink-0">
         <span className="text-white text-[14px] font-medium">{ctaText}</span>
         <Icon name="arrow_forward" size={20} color="white" />
       </button>

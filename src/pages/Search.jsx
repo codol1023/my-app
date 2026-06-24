@@ -3,6 +3,7 @@ import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 import Icon from '../components/Icon'
+import CityDropdown from '../components/CityDropdown'
 
 export default function Search() {
   const navigate = useNavigate()
@@ -29,30 +30,27 @@ export default function Search() {
         <div className="bg-white rounded-tl-[8px] rounded-tr-[8px] -mt-[8px] px-[16px] pt-[24px] pb-[32px] flex flex-col gap-[24px]">
           <div className="flex flex-col gap-[10px]">
             <div className="flex flex-col gap-[10px]">
-              {/* 출발지 */}
-              <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
-                <div className="flex items-center gap-[8px] flex-1">
-                  <Icon name="trip_origin" size={24} color="#132968" />
-                  <input
-                    value={origin}
-                    onChange={e => setOrigin(e.target.value)}
-                    placeholder="출발지 입력"
-                    className="bg-transparent text-[#132968] text-[14px] font-semibold outline-none flex-1 min-w-0"
-                  />
-                </div>
-                <button onClick={swap} className="cursor-pointer ml-[8px]">
+              {/* 출발지 — 드롭다운 */}
+              <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px] relative">
+                <CityDropdown
+                  value={origin}
+                  onChange={setOrigin}
+                  placeholder="출발지 입력"
+                  iconName="trip_origin"
+                  iconColor="#132968"
+                />
+                <button onClick={swap} className="cursor-pointer ml-[8px] flex-shrink-0">
                   <Icon name="swap_vert" size={24} color="#132968" />
                 </button>
               </div>
-              {/* 목적지 */}
-              <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[16px] gap-[8px]">
-                <Icon name="location_on" size={24} color={destination ? '#132968' : '#6f7584'} />
-                <input
+              {/* 목적지 — 드롭다운 */}
+              <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[16px] relative">
+                <CityDropdown
                   value={destination}
-                  onChange={e => setDestination(e.target.value)}
+                  onChange={setDestination}
                   placeholder="어디로?"
-                  className="bg-transparent text-[14px] font-semibold outline-none flex-1 min-w-0 placeholder-[#6f7584]"
-                  style={{ color: destination ? '#132968' : undefined }}
+                  iconName="location_on"
+                  iconColor={destination ? '#132968' : '#6f7584'}
                 />
               </div>
             </div>
