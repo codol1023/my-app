@@ -1,6 +1,6 @@
 import { useTrip, cityName } from '../context/TripContext'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import StatusBar from '../components/StatusBar'
 import Icon from '../components/Icon'
 
@@ -79,6 +79,17 @@ export default function Compare() {
     (initDate >= 1 && initDate <= 30) ? initDate : 15
   )
   const [selectedTransport, setSelectedTransport] = useState(null)
+  const dateScrollRef = useRef(null)
+
+  useEffect(() => {
+    if (!dateScrollRef.current) return
+    const idx = DATES.findIndex(d => d.date === selectedDate)
+    if (idx < 0) return
+    const chipW = 56 // 48px chip + 8px gap
+    const containerW = dateScrollRef.current.clientWidth
+    const target = idx * chipW - containerW / 2 + 24
+    dateScrollRef.current.scrollLeft = Math.max(0, target)
+  }, [selectedDate])
 
   const data = TRANSPORT_BY_DATE[selectedDate]
   const TRANSPORTS = [
@@ -133,7 +144,7 @@ export default function Compare() {
               <div className="size-[8px] rounded-full bg-[#afb8c5]" />
               <span className="text-[#afb8c5] text-[12px] font-semibold">출발 날짜</span>
             </div>
-            <div className="overflow-x-auto">
+            <div ref={dateScrollRef} className="overflow-x-auto">
               <div className="flex gap-[8px] w-max">
                 {DATES.map((d) => (
                   <button key={d.date}
