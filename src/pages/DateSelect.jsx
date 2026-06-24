@@ -17,8 +17,10 @@ const JUNE_2026 = [
 
 export default function DateSelect() {
   const navigate = useNavigate()
-  const { origin, setOrigin, destination, setDestination } = useTrip()
+  const { origin, setOrigin, destination, setDestination, passengers, setPassengers, saveSearch } = useTrip()
   const swap = () => { const t = origin; setOrigin(destination); setDestination(t) }
+  const canSearch = origin.trim() && destination.trim() && departDay
+  const handleSearch = () => { if (!canSearch) return; saveSearch(); navigate(`/compare${departDay ? `?date=${departDay}` : ""}`) }
   const [flexDate, setFlexDate] = useState(false)
   const [departDay, setDepartDay] = useState(null)
   const [returnDay, setReturnDay] = useState(null)
@@ -172,18 +174,18 @@ export default function DateSelect() {
             </div>
           </div>
 
-          {/* 인원 */}
+          {/* 인원 — context 연동 */}
           <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
             <div className="flex items-center gap-[8px]">
               <Icon name="person" size={24} color="#132968" />
-              <span className="text-[#132968] text-[14px] font-semibold">1 성인</span>
+              <span className="text-[#132968] text-[14px] font-semibold">{passengers} 성인</span>
             </div>
             <div className="flex items-center">
-              <button className="cursor-pointer size-[48px] flex items-center justify-center">
+              <button onClick={() => setPassengers(Math.max(1, passengers - 1))} className="cursor-pointer size-[48px] flex items-center justify-center">
                 <Icon name="do_not_disturb_on" size={24} color="#6b7281" />
               </button>
-              <span className="text-[14px] font-semibold">1</span>
-              <button className="cursor-pointer size-[48px] flex items-center justify-center">
+              <span className="text-[14px] font-semibold w-[16px] text-center">{passengers}</span>
+              <button onClick={() => setPassengers(passengers + 1)} className="cursor-pointer size-[48px] flex items-center justify-center">
                 <Icon name="add_circle" size={24} color="#6b7281" />
               </button>
             </div>
@@ -192,11 +194,13 @@ export default function DateSelect() {
         </div>
       </div>
 
-      {/* 검색 버튼 sticky */}
+      {/* 검색 버튼 sticky — 경로+날짜 미입력 시 비활성 */}
       <div className="flex-shrink-0 px-[16px] pb-[8px] pt-[8px] bg-white border-t border-[#f0f0f0]">
-        <button onClick={() => navigate(`/compare${departDay ? `?date=${departDay}` : ''}`)}
-          className="cursor-pointer bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full">
-          <span className="text-white text-[14px] font-medium">검색 Omio</span>
+        <button onClick={handleSearch}
+          className={`cursor-pointer h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors ${canSearch ? 'bg-[#fa6b6b]' : 'bg-[#ccc] cursor-not-allowed'}`}>
+          <span className="text-white text-[14px] font-medium">
+            {departDay ? '검색 Omio' : '날짜를 선택해주세요'}
+          </span>
         </button>
       </div>
 

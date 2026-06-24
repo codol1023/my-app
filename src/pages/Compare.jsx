@@ -70,7 +70,7 @@ function getBadge(key, data) {
 
 export default function Compare() {
   const navigate = useNavigate()
-  const { origin, destination } = useTrip()
+  const { origin, destination, passengers } = useTrip()
   const orig = cityName(origin) || "파리"
   const dest = cityName(destination) || "목적지"
   const [searchParams] = useSearchParams()
@@ -194,7 +194,7 @@ export default function Compare() {
                       </div>
                       <div className="flex flex-col items-start">
                         <span className="text-[#afb8c5] text-[12px] font-semibold">최저가</span>
-                        <span className="text-[#ff5553] text-[14px] font-semibold">₩{t.price.toLocaleString()}</span>
+                        <span className="text-[#ff5553] text-[14px] font-semibold">₩{(t.price * passengers).toLocaleString()}</span>
                       </div>
                       <div className="flex flex-col items-start">
                         <span className="text-[#afb8c5] text-[12px] font-semibold">편수</span>

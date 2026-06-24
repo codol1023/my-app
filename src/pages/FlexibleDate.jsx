@@ -72,7 +72,7 @@ const DAYS_KO = ['일','월','화','수','목','금','토']
 
 export default function FlexibleDate() {
   const navigate = useNavigate()
-  const { origin, destination } = useTrip()
+  const { origin, destination, passengers, setPassengers } = useTrip()
   const orig = cityName(origin) || "파리"
   const dest = cityName(destination) || "목적지"
   const [filter, setFilter] = useState('전체')
@@ -202,7 +202,7 @@ export default function FlexibleDate() {
                     style={{ color: isSel ? 'white' : price !== undefined ? textColor(cls) : '#ccc' }}>{d}</span>
                   {price !== undefined && (
                     <span className="relative z-10 text-[10px]"
-                      style={{ color: isSel ? 'white' : textColor(cls) }}>₩{price}</span>
+                      style={{ color: isSel ? "white" : textColor(cls) }}>₩{price * passengers}</span>
                   )}
                 </div>
               )
@@ -236,7 +236,7 @@ export default function FlexibleDate() {
               return (
                 <div key={e.d} onClick={() => setSelectedDay(e.d)}
                   className="flex-shrink-0 w-[28px] flex flex-col items-center gap-[3px] h-full justify-end cursor-pointer">
-                  <span className="text-[9px] font-semibold text-center whitespace-nowrap" style={{ color: textColor(cls) }}>₩{e.price}</span>
+                  <span className="text-[9px] font-semibold text-center whitespace-nowrap" style={{ color: textColor(cls) }}>₩{e.price * passengers}</span>
                   <div className="w-full rounded-t-[4px]"
                     style={{ height: barH, background: bgColor(cls), border: `1px solid ${cls === 'cheap' ? '#b8d9bf' : cls === 'expensive' ? '#f5c0c0' : '#e0c9b8'}`, outline: isSel ? '2px solid #132968' : 'none', outlineOffset: 1 }} />
                   <span className="text-[9px] text-[#6b7281] text-center">{e.d}</span>
@@ -247,14 +247,37 @@ export default function FlexibleDate() {
         </div>
       </div>
 
-      {/* CTA Button */}
-      <button onClick={() => navigate(`/compare${selectedDay ? `?date=${selectedDay}` : ''}`)}
-        className="w-full h-[48px] min-h-[48px] bg-[#fa6b6b] rounded-[8px] flex items-center justify-center gap-[4px] border-none cursor-pointer flex-shrink-0">
-        <span className="text-white text-[14px] font-medium">{ctaText}</span>
-        <Icon name="arrow_forward" size={20} color="white" />
-      </button>
+      {/* 인원 — gap-[24px] above CTA */}
+      <div className="mt-[12px] bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
+        <div className="flex items-center gap-[8px]">
+          <Icon name="person" size={24} color="#132968" />
+          <span className="text-[#132968] text-[14px] font-semibold">{passengers} 성인</span>
+        </div>
+        <div className="flex items-center">
+          <button onClick={() => setPassengers(Math.max(1, passengers - 1))} className="cursor-pointer size-[48px] flex items-center justify-center">
+            <Icon name="do_not_disturb_on" size={24} color="#6b7281" />
+          </button>
+          <span className="text-[14px] font-semibold w-[16px] text-center">{passengers}</span>
+          <button onClick={() => setPassengers(passengers + 1)} className="cursor-pointer size-[48px] flex items-center justify-center">
+            <Icon name="add_circle" size={24} color="#6b7281" />
+          </button>
+        </div>
+      </div>
 
       </div>{/* end scroll area */}
+
+      {/* CTA — sticky footer, 날짜 미선택 시 gray */}
+      <div className="flex-shrink-0 px-[16px] pb-[8px] pt-[8px] bg-white border-t border-[#f0f0f0]">
+        <button
+          onClick={() => { if (!selectedDay) return; navigate(`/compare?date=${selectedDay}`) }}
+          className={`w-full h-[48px] rounded-[8px] flex items-center justify-center gap-[4px] border-none transition-colors flex-shrink-0
+            ${selectedDay ? 'bg-[#fa6b6b] cursor-pointer' : 'bg-[#ccc] cursor-not-allowed'}`}>
+          <span className="text-white text-[14px] font-medium">
+            {selectedDay ? `${month}월 ${selectedDay}일로 교통편 보기` : '날짜를 선택해주세요'}
+          </span>
+          {selectedDay && <Icon name="arrow_forward" size={20} color="white" />}
+        </button>
+      </div>
 
       <BottomNav />
     </div>

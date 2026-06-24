@@ -9,10 +9,11 @@ import CityDropdown from '../components/CityDropdown'
 export default function Search() {
   const navigate = useNavigate()
   const [flexDate, setFlexDate] = useState(false)
-  const [passengers, setPassengers] = useState(1)
-  const { origin, setOrigin, destination, setDestination } = useTrip()
+  const { origin, setOrigin, destination, setDestination, passengers, setPassengers, saveSearch } = useTrip()
 
   const swap = () => { const t = origin; setOrigin(destination); setDestination(t) }
+  const canSearch = origin.trim() && destination.trim()
+  const handleSearch = () => { if (!canSearch) return; saveSearch(); navigate('/compare') }
 
   return (
     <div className="flex flex-col bg-white" style={{ height: '100%' }}>
@@ -108,8 +109,8 @@ export default function Search() {
 
       {/* 검색 버튼 — BottomNav 바로 위 sticky */}
       <div className="flex-shrink-0 px-[16px] pb-[8px] pt-[8px] bg-white border-t border-[#f0f0f0]">
-        <button onClick={() => navigate('/compare')}
-          className="cursor-pointer bg-[#fa6b6b] h-[48px] rounded-[8px] flex items-center justify-center w-full">
+        <button onClick={handleSearch}
+          className={`cursor-pointer h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors ${canSearch ? "bg-[#fa6b6b]" : "bg-[#ccc] cursor-not-allowed"}`}>
           <span className="text-white text-[14px] font-medium">검색 Omio</span>
         </button>
       </div>
