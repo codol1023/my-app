@@ -19,12 +19,13 @@ export default function DateSelect() {
   const navigate = useNavigate()
   const { origin, setOrigin, destination, setDestination, passengers, setPassengers, saveSearch } = useTrip()
   const swap = () => { const t = origin; setOrigin(destination); setDestination(t) }
-  const canSearch = origin.trim() && destination.trim() && departDay
-  const handleSearch = () => { if (!canSearch) return; saveSearch(); navigate(`/compare${departDay ? `?date=${departDay}` : ""}`) }
   const [flexDate, setFlexDate] = useState(false)
   const [departDay, setDepartDay] = useState(null)
   const [returnDay, setReturnDay] = useState(null)
   const [selectingReturn, setSelectingReturn] = useState(false)
+
+  const canSearch = !!(origin.trim() && destination.trim() && departDay)
+  const handleSearch = () => { if (!canSearch) return; saveSearch(); navigate(`/compare${departDay ? `?date=${departDay}` : ''}`) }
 
   const handleDayClick = (day) => {
     if (!day) return
