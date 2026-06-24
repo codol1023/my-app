@@ -1,3 +1,4 @@
+import { useTrip, cityName } from '../context/TripContext'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
@@ -71,6 +72,9 @@ const DAYS_KO = ['일','월','화','수','목','금','토']
 
 export default function FlexibleDate() {
   const navigate = useNavigate()
+  const { origin, destination } = useTrip()
+  const orig = cityName(origin) || "파리"
+  const dest = cityName(destination) || "목적지"
   const [filter, setFilter] = useState('전체')
   const [view, setView] = useState('calendar')
   const [year, setYear] = useState(2026)
@@ -116,7 +120,7 @@ export default function FlexibleDate() {
             <Icon name="arrow_back_ios_new" size={24} color="white" />
           </button>
           <div className="flex items-center gap-[8px] text-white text-[16px] font-semibold">
-            <span>파리</span><span>↔</span><span>바르셀로나</span>
+            <span>{orig}</span><span>↔</span><span>{dest}</span>
           </div>
           <div className="border border-white rounded-[4px] h-[24px] px-[8px] flex items-center cursor-pointer">
             <span className="text-white text-[12px] font-semibold">수정</span>
@@ -220,7 +224,7 @@ export default function FlexibleDate() {
       {/* Graph View */}
       <div className={`h-[351px] border border-[#d5d5d5] rounded-[8px] bg-white overflow-hidden flex flex-col transition-opacity duration-200 ${view === 'graph' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         <div className="px-[16px] pt-[16px] flex-shrink-0">
-          <div className="text-[14px] font-semibold text-[#132968] mb-[4px]">파리 → 바르셀로나 · {year}년 {month}월</div>
+          <div className="text-[14px] font-semibold text-[#132968] mb-[4px]">{orig} → {dest} · {year}년 {month}월</div>
           <div className="text-[11px] text-[#6b7281]">날짜별 최저가 추이 (단위: 천원) · 좌우로 스크롤</div>
         </div>
         <div className="flex-1 overflow-x-auto overflow-y-hidden px-[16px] py-[12px]">

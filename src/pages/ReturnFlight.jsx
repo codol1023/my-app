@@ -1,3 +1,4 @@
+import { useTrip, cityName } from '../context/TripContext'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
@@ -34,6 +35,9 @@ const TRANSPORT_LABELS = { flight: '항공', train: '기차' }
 
 export default function ReturnFlight() {
   const navigate = useNavigate()
+  const { origin, destination } = useTrip()
+  const orig = cityName(origin) || "파리"
+  const dest = cityName(destination) || "목적지"
   const [searchParams] = useSearchParams()
 
   // 리턴편 선택(1)에서 돌아올 때 선택 정보 수신
@@ -86,9 +90,9 @@ export default function ReturnFlight() {
         <div className="bg-[#f1f2f6] border border-[#d5d5d5] h-[50px] rounded-[8px] flex items-center justify-between px-[16px]">
           <div>
             <div className="flex items-center gap-[4px]">
-              <span className="text-[#132968] text-[16px] font-semibold">파리</span>
+              <span className="text-[#132968] text-[16px] font-semibold">{orig}</span>
               <Icon name="arrow_forward" size={20} color="#132968" />
-              <span className="text-[#132968] text-[16px] font-semibold">바르셀로나 · 왕복</span>
+              <span className="text-[#132968] text-[16px] font-semibold">{dest} · 왕복</span>
             </div>
             <p className="text-[#6b7281] text-[14px]">성인 1명</p>
           </div>

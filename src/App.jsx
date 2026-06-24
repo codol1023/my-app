@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { TripProvider } from './context/TripContext'
 import Search from './pages/Search'
 import DateSelect from './pages/DateSelect'
 import FlexibleDate from './pages/FlexibleDate'
@@ -10,21 +11,23 @@ import ReturnFlightList from './pages/ReturnFlightList'
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="mobile-frame">
-        <Routes>
-          <Route path="/" element={<Search />} />
-          <Route path="/date-select" element={<DateSelect />} />
-          <Route path="/flexible" element={<FlexibleDate />} />
-          <Route path="/compare" element={<Compare />} />
-          <Route path="/departure" element={<DepartureFlight />} />
-          <Route path="/departure-train" element={<DepartureTrainBus />} />
-          <Route path="/departure-bus" element={<DepartureTrainBus />} />
-          <Route path="/return" element={<ReturnFlight />} />
-          <Route path="/return-list" element={<ReturnFlightList />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <TripProvider>
+      <BrowserRouter>
+        <div className="mobile-frame">
+          <Routes>
+            <Route path="/" element={<Search />} />
+            <Route path="/date-select" element={<DateSelect />} />
+            <Route path="/flexible" element={<FlexibleDate />} />
+            <Route path="/compare" element={<Compare />} />
+            <Route path="/departure" element={<DepartureFlight />} />
+            <Route path="/departure-train" element={<DepartureTrainBus />} />
+            <Route path="/departure-bus" element={<DepartureTrainBus />} />
+            <Route path="/return" element={<ReturnFlight />} />
+            <Route path="/return-list" element={<ReturnFlightList />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </TripProvider>
   )
 }
 

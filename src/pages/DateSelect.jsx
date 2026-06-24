@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 import Icon from '../components/Icon'
+import CityDropdown from '../components/CityDropdown'
+import { useTrip } from '../context/TripContext'
 
 const DAYS = ['일', '월', '화', '수', '목', '금', '토']
 const JUNE_2026 = [
@@ -15,6 +17,8 @@ const JUNE_2026 = [
 
 export default function DateSelect() {
   const navigate = useNavigate()
+  const { origin, setOrigin, destination, setDestination } = useTrip()
+  const swap = () => { const t = origin; setOrigin(destination); setDestination(t) }
   const [flexDate, setFlexDate] = useState(false)
   const [departDay, setDepartDay] = useState(null)
   const [returnDay, setReturnDay] = useState(null)
@@ -57,17 +61,16 @@ export default function DateSelect() {
 
         <div className="px-[16px] pt-[16px] pb-[32px] flex flex-col gap-[24px]">
           <div className="flex flex-col gap-[10px]">
-            {/* 출발지/목적지 */}
-            <div className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px]">
-              <div className="flex items-center gap-[8px]">
-                <Icon name="trip_origin" size={24} color="#132968" />
-                <span className="text-[#132968] text-[14px] font-semibold">파리 (CDG)</span>
-              </div>
-              <Icon name="swap_vert" size={24} color="#132968" />
+            {/* 출발지 — 드롭다운 */}
+            <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[16px] relative">
+              <CityDropdown value={origin} onChange={setOrigin} placeholder="출발지 입력" iconName="trip_origin" iconColor="#132968" />
+              <button onClick={swap} className="cursor-pointer ml-[8px] flex-shrink-0">
+                <Icon name="swap_vert" size={24} color="#132968" />
+              </button>
             </div>
-            <div className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[16px] gap-[8px]">
-              <Icon name="location_on" size={24} color="#6f7584" />
-              <span className="text-[#6f7584] text-[14px] font-semibold">어디로?</span>
+            {/* 목적지 — 드롭다운 */}
+            <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[16px] relative">
+              <CityDropdown value={destination} onChange={setDestination} placeholder="어디로?" iconName="location_on" iconColor={destination ? '#132968' : '#6f7584'} />
             </div>
 
             {/* 날짜 row — gutter 8 */}

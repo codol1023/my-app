@@ -1,3 +1,4 @@
+import { useTrip, cityName } from '../context/TripContext'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 import StatusBar from '../components/StatusBar'
@@ -51,6 +52,9 @@ export default function ReturnFlightList() {
   const isFlight = type === 'flight'
   const label = isFlight ? '항공 리턴편' : '기차 리턴편'
 
+  const { origin, destination } = useTrip()
+  const orig = cityName(origin) || "파리"
+  const dest = cityName(destination) || "목적지"
   const [selected, setSelected] = useState(null)
   const [filter, setFilter] = useState('전체')
   const filters = ['전체', '직항만', '오전 출발', '가격순']
@@ -85,7 +89,7 @@ export default function ReturnFlightList() {
         <div className="bg-[#132968] border-b border-[#d5d5d5] h-[50px] flex items-center justify-between px-[16px]">
           <div>
             <p className="text-white text-[16px] font-semibold">{label}</p>
-            <p className="text-[#6b7281] text-[14px]">6월 {date}일 (월) · 바르셀로나 → 파리</p>
+            <p className="text-[#6b7281] text-[14px]">6월 {date}일 (월) · {dest} → {orig}</p>
           </div>
           <div className="bg-[#3a4a67] h-[20px] px-[12px] rounded-[4px] flex items-center">
             <span className="text-white text-[10px] font-semibold">{count}편</span>

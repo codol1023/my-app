@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState } from "react"
+import { useTrip } from "../context/TripContext"
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 import Icon from '../components/Icon'
@@ -9,8 +10,7 @@ export default function Search() {
   const navigate = useNavigate()
   const [flexDate, setFlexDate] = useState(false)
   const [passengers, setPassengers] = useState(1)
-  const [origin, setOrigin] = useState('파리 (CDG)')
-  const [destination, setDestination] = useState('')
+  const { origin, setOrigin, destination, setDestination } = useTrip()
 
   const swap = () => { const t = origin; setOrigin(destination); setDestination(t) }
 
