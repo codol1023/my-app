@@ -18,7 +18,7 @@ const JUNE_2026 = [
 export default function DateSelect() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { origin, setOrigin, destination, setDestination, passengers, setPassengers, saveSearch } = useTrip()
+  const { origin, setOrigin, destination, setDestination, passengers, setPassengers, saveSearch, setIsOneway } = useTrip()
   const swap = () => { const t = origin; setOrigin(destination); setDestination(t) }
   const [flexDate, setFlexDate] = useState(false)
   const [departDay, setDepartDay] = useState(null)
@@ -27,7 +27,12 @@ export default function DateSelect() {
   const [roundtrip, setRoundtrip] = useState(searchParams.get('roundtrip') === '1')
 
   const canSearch = !!(origin.trim() && destination.trim() && departDay)
-  const handleSearch = () => { if (!canSearch) return; saveSearch(); navigate(`/compare${departDay ? `?date=${departDay}` : ''}`) }
+  const handleSearch = () => {
+    if (!canSearch) return
+    saveSearch()
+    setIsOneway(!roundtrip || !returnDay)
+    navigate(`/compare${departDay ? `?date=${departDay}` : ''}`)
+  }
 
   const enableRoundtrip = () => {
     setRoundtrip(true)

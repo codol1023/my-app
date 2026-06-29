@@ -10,6 +10,7 @@ export function TripProvider({ children }) {
   )
   const [destination, setDestination] = useState('')
   const [passengers, setPassengers] = useState(1)
+  const [isOneway, setIsOneway] = useState(false)
 
   const setOrigin = (val) => {
     setOriginState(val)
@@ -20,7 +21,7 @@ export function TripProvider({ children }) {
   }
 
   return (
-    <TripContext.Provider value={{ origin, setOrigin, destination, setDestination, passengers, setPassengers, saveSearch }}>
+    <TripContext.Provider value={{ origin, setOrigin, destination, setDestination, passengers, setPassengers, saveSearch, isOneway, setIsOneway }}>
       {children}
     </TripContext.Provider>
   )

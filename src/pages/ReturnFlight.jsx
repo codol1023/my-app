@@ -6,16 +6,13 @@ import Icon from '../components/Icon'
 
 const DAY_KO = ['일','월','화','수','목','금','토']
 
-// 6월 전체 + 7월 초 가격 데이터
 const PRICE_MAP = {
   1:128,2:175,3:130,4:122,5:119,6:95,7:97,8:160,9:115,10:99,
   11:92,12:91,13:110,14:118,15:79,16:98,17:94,18:89,19:107,20:155,
   21:172,22:128,23:112,24:109,25:162,26:168,27:180,28:182,29:110,30:105,
-  // July (31+)
   31:107,32:105,33:172,34:168,35:172,36:145,37:138
 }
 
-// 날짜별 교통편 데이터 (출발일 다음날부터 선택 가능)
 function getTransportData(dateNum) {
   const base = PRICE_MAP[dateNum] ?? 120
   return {
@@ -24,7 +21,6 @@ function getTransportData(dateNum) {
   }
 }
 
-// 날짜 숫자 → { month, day, dayKo, expensive }
 function buildDate(dateNum) {
   const month = dateNum <= 30 ? 6 : 7
   const day   = dateNum <= 30 ? dateNum : dateNum - 30
@@ -38,17 +34,17 @@ const TRANSPORT_LABELS = { flight: '항공', train: '기차' }
 
 export default function ReturnFlight() {
   const navigate = useNavigate()
-  const { origin, destination } = useTrip()
+  const { origin, destination, isOneway } = useTrip()
   const orig = cityName(origin) || '파리'
   const dest = cityName(destination) || '목적지'
   const [searchParams] = useSearchParams()
 
   const selectedType  = searchParams.get('selected')
   const selectedPrice = parseInt(searchParams.get('returnprice') ?? '0', 10)
-  const depDate       = parseInt(searchParams.get('depdate') ?? '15', 10)  // 출발일
+  const depDate       = parseInt(searchParams.get('depdate') ?? '15', 10)
   const initReturn    = parseInt(searchParams.get('date') ?? String(depDate), 10)
 
-  // 출발일 당일부터 14일치 동적 생성 (당일치기 여행자 포함)
+  // 출발일 당일부터 14일치 (당일치기 포함)
   const returnDates = Array.from({ length: 14 }, (_, i) => buildDate(depDate + i))
 
   const validInit = returnDates.find(d => d.dateNum === initReturn)
@@ -56,14 +52,14 @@ export default function ReturnFlight() {
     validInit ? initReturn : returnDates[0]?.dateNum ?? depDate
   )
 
-  const [oneway, setOneway] = useState(false)
+  // 편도 검색으로 온 경우 처음부터 편도 상태
+  const [oneway, setOneway] = useState(isOneway)
 
   const data = getTransportData(selectedDate)
   const cheapestType = data.flight.price <= data.train.price ? 'flight' : 'train'
   const totalPrice = DEPARTURE_PRICE + (selectedType ? selectedPrice : 0)
   const canProceed = oneway || !!selectedType
 
-  // 날짜 슬라이더 자동 스크롤
   const dateScrollRef = useRef(null)
   useEffect(() => {
     if (!dateScrollRef.current) return
@@ -108,7 +104,7 @@ export default function ReturnFlight() {
             <div className="flex items-center gap-[4px]">
               <span className="text-[#132968] text-[16px] font-semibold">{orig}</span>
               <Icon name="arrow_forward" size={20} color="#132968" />
-              <span className="text-[#132968] text-[16px] font-semibold">{dest} · 왕복</span>
+              <span className="text-[#132968] text-[16px] font-semibold">{dest} · {oneway ? '편도' : '왕복'}</span>
             </div>
             <p className="text-[#6b7281] text-[14px]">성인 1명</p>
           </div>
@@ -131,83 +127,89 @@ export default function ReturnFlight() {
           </button>
         </div>
 
-        {/* 편도선택 */}
-        <button
-          onClick={() => setOneway(!oneway)}
-          className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center gap-[8px] px-[16px] w-full">
-          <Icon name={oneway ? 'check_box' : 'check_box_outline_blank'} size={24} color={oneway ? '#008026' : '#6b7281'} />
-          <span className="text-[#132968] text-[14px] font-semibold">편도선택</span>
-        </button>
-
-        {/* 리턴편 선택 박스 */}
-        <div className={`transition-all duration-300 overflow-hidden ${oneway ? 'max-h-0 opacity-0' : 'max-h-[700px] opacity-100'}`}>
+        {/* 리턴편 선택 박스 (편도선택 체크박스 포함) */}
         <div className="border-2 border-[#132968] rounded-[8px]">
-          <div className="bg-[#132968] flex items-center justify-between px-[12px] py-[10px] rounded-tl-[8px] rounded-tr-[8px]">
-            <p className="text-white text-[16px] font-semibold">리턴편 선택</p>
-            <div className="bg-[#3a4a67] rounded-[4px] h-[28px] px-[12px] flex items-center gap-[4px]">
-              <span className="text-white text-[12px] font-medium">자동 오픈</span>
-              <Icon name="arrow_downward_alt" size={20} color="white" />
-            </div>
-          </div>
 
-          <div className="bg-white px-[12px] py-[16px] flex flex-col gap-[16px] rounded-bl-[8px] rounded-br-[8px]">
-            {/* 날짜 슬라이더 — 출발일 다음날부터 동적 생성 */}
-            <div className="flex flex-col gap-[8px]">
-              <span className="text-[#6b7281] text-[10px]">리턴 날짜 (6/{depDate} 당일부터)</span>
-              <div ref={dateScrollRef} className="overflow-x-auto">
-                <div className="flex gap-[8px] w-max">
-                  {returnDates.map((d) => (
-                    <button key={d.dateNum}
-                      onClick={() => { setSelectedDate(d.dateNum) }}
-                      className={`size-[48px] flex flex-col items-center justify-center rounded-[8px] border-2 flex-shrink-0
-                        ${d.dateNum === selectedDate ? 'bg-[#132968] border-[#132968]'
-                          : d.expensive ? 'border-[#fd3235]' : 'border-[#e5e7ee]'}`}>
-                      <span className={`text-[10px] font-normal ${d.dateNum === selectedDate ? 'text-[#d8d9dd]' : 'text-[#dadbe0]'}`}>{d.dayKo}</span>
-                      <span className={`text-[12px] font-semibold ${d.dateNum === selectedDate ? 'text-white' : 'text-[#132968]'}`}>{d.day}</span>
-                      <span className={`text-[10px] font-normal ${d.dateNum === selectedDate ? 'text-[#d8d9dd]' : d.expensive ? 'text-[#fd3235]' : 'text-[#c24c00]'}`}>₩{d.price}</span>
-                    </button>
-                  ))}
-                </div>
+          {/* 헤더 + 날짜슬라이더 + 이동수단 카드 — oneway 시 접힘 */}
+          <div className={`transition-all duration-300 overflow-hidden ${oneway ? 'max-h-0' : 'max-h-[700px]'}`}>
+            <div className="bg-[#132968] flex items-center justify-between px-[12px] py-[10px] rounded-tl-[6px] rounded-tr-[6px]">
+              <p className="text-white text-[16px] font-semibold">리턴편 선택</p>
+              <div className="bg-[#3a4a67] rounded-[4px] h-[28px] px-[12px] flex items-center gap-[4px]">
+                <span className="text-white text-[12px] font-medium">자동 오픈</span>
+                <Icon name="arrow_downward_alt" size={20} color="white" />
               </div>
             </div>
 
-            {/* 교통수단 카드 */}
-            <div className="flex flex-col gap-[12px]">
-              {['flight', 'train'].map((type) => {
-                const t = data[type]
-                const isSelected = selectedType === type
-                const isCheapest = type === cheapestType
-                return (
-                  <button key={type} onClick={() => handleTransportClick(type)}
-                    className={`bg-white border-2 rounded-[8px] py-[18px] px-[20px] flex flex-col gap-[12px] w-full transition-colors
-                      ${isSelected ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}>
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-[12px]">
-                        <span className="text-[16px] font-semibold text-black">{TRANSPORT_LABELS[type]}</span>
-                        {isCheapest && (
-                          <div className="h-[20px] px-[12px] rounded-[4px] flex items-center bg-[#e6f5e8]">
-                            <span className="text-[10px] font-semibold text-[#008026]">가장 저렴</span>
-                          </div>
-                        )}
+            <div className="bg-white px-[12px] py-[16px] flex flex-col gap-[16px]">
+              {/* 날짜 슬라이더 */}
+              <div className="flex flex-col gap-[8px]">
+                <span className="text-[#6b7281] text-[10px]">리턴 날짜 (6/{depDate} 당일부터)</span>
+                <div ref={dateScrollRef} className="overflow-x-auto">
+                  <div className="flex gap-[8px] w-max">
+                    {returnDates.map((d) => (
+                      <button key={d.dateNum}
+                        onClick={() => setSelectedDate(d.dateNum)}
+                        className={`size-[48px] flex flex-col items-center justify-center rounded-[8px] border-2 flex-shrink-0
+                          ${d.dateNum === selectedDate ? 'bg-[#132968] border-[#132968]'
+                            : d.expensive ? 'border-[#fd3235]' : 'border-[#e5e7ee]'}`}>
+                        <span className={`text-[10px] font-normal ${d.dateNum === selectedDate ? 'text-[#d8d9dd]' : 'text-[#dadbe0]'}`}>{d.dayKo}</span>
+                        <span className={`text-[12px] font-semibold ${d.dateNum === selectedDate ? 'text-white' : 'text-[#132968]'}`}>{d.day}</span>
+                        <span className={`text-[10px] font-normal ${d.dateNum === selectedDate ? 'text-[#d8d9dd]' : d.expensive ? 'text-[#fd3235]' : 'text-[#c24c00]'}`}>₩{d.price}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* 교통수단 카드 */}
+              <div className="flex flex-col gap-[12px]">
+                {['flight', 'train'].map((type) => {
+                  const t = data[type]
+                  const isSelected = selectedType === type
+                  const isCheapest = type === cheapestType
+                  return (
+                    <button key={type} onClick={() => handleTransportClick(type)}
+                      className={`bg-white border-2 rounded-[8px] py-[18px] px-[20px] flex flex-col gap-[12px] w-full transition-colors
+                        ${isSelected ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}>
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-[12px]">
+                          <span className="text-[16px] font-semibold text-black">{TRANSPORT_LABELS[type]}</span>
+                          {isCheapest && (
+                            <div className="h-[20px] px-[12px] rounded-[4px] flex items-center bg-[#e6f5e8]">
+                              <span className="text-[10px] font-semibold text-[#008026]">가장 저렴</span>
+                            </div>
+                          )}
+                        </div>
+                        <span className="text-[#ff5553] text-[16px] font-semibold">
+                          {isSelected ? `₩${selectedPrice.toLocaleString()}` : `₩${t.price.toLocaleString()}`}
+                        </span>
                       </div>
-                      <span className="text-[#ff5553] text-[16px] font-semibold">
-                        {isSelected ? `₩${selectedPrice.toLocaleString()}` : `₩${t.price.toLocaleString()}`}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-[#7d8391] text-[14px] font-semibold">{t.dur}</span>
-                      <div className="flex items-center gap-[4px]">
-                        <span className="text-[#132968] text-[14px] font-semibold">{t.count}편</span>
-                        <Icon name="chevron_right" size={20} color="#afb8c5" />
+                      <div className="flex items-center justify-between w-full">
+                        <span className="text-[#7d8391] text-[14px] font-semibold">{t.dur}</span>
+                        <div className="flex items-center gap-[4px]">
+                          <span className="text-[#132968] text-[14px] font-semibold">{t.count}편</span>
+                          <Icon name="chevron_right" size={20} color="#afb8c5" />
+                        </div>
                       </div>
-                    </div>
-                  </button>
-                )
-              })}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
+
+            {/* 구분선 */}
+            <div className="h-[1px] bg-[#e5e7ee] mx-[12px]" />
           </div>
+
+          {/* 편도선택 체크박스 — 항상 표시, 박스 하단 */}
+          <button
+            onClick={() => setOneway(!oneway)}
+            className={`cursor-pointer flex items-center gap-[8px] px-[12px] py-[12px] w-full
+              ${oneway ? 'rounded-[6px]' : 'rounded-bl-[6px] rounded-br-[6px]'}`}>
+            <Icon name={oneway ? 'check_box' : 'check_box_outline_blank'} size={24} color={oneway ? '#008026' : '#6b7281'} />
+            <span className={`text-[14px] font-semibold ${oneway ? 'text-[#008026]' : 'text-[#132968]'}`}>편도선택</span>
+          </button>
         </div>
-        </div>{/* 애니메이션 래퍼 닫기 */}
 
         {/* 왕복 합계 (리턴 선택 후, 편도 아닐 때만) */}
         {selectedType && !oneway && (
