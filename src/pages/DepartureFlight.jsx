@@ -44,6 +44,8 @@ export default function DepartureFlight() {
   const dest = cityName(destination) || "목적지"
   const [selected, setSelected] = useState(null)
   const [selectedDepPrice, setSelectedDepPrice] = useState(null)
+  const [selectedDepTime, setSelectedDepTime] = useState(null)
+  const [selectedDepAirline, setSelectedDepAirline] = useState(null)
   const [filter, setFilter] = useState('전체')
   const filters = ['전체', '직항만', '오전 출발', '가격순']
 
@@ -92,7 +94,7 @@ export default function DepartureFlight() {
       {/* ── 스크롤 영역 ── */}
       <div className="flex-1 overflow-y-auto px-[16px] py-[16px] flex flex-col gap-[16px]">
         {flights.map((f) => (
-          <button key={f.id} onClick={() => { setSelected(f.id); setSelectedDepPrice(f.price) }}
+          <button key={f.id} onClick={() => { setSelected(f.id); setSelectedDepPrice(f.price); setSelectedDepTime(f.dep); setSelectedDepAirline(f.airline) }}
             className={`bg-white border-2 rounded-[8px] py-[12px] flex flex-col gap-[8px] w-full transition-colors
               ${selected === f.id ? 'border-[#fa6b6b]' : 'border-[#ccc]'}`}>
             <div className="flex items-center justify-between px-[20px]">
@@ -134,7 +136,7 @@ export default function DepartureFlight() {
       <div className="flex-shrink-0 px-[16px] pb-[16px] pt-[8px] bg-white border-t border-[#f0f0f0]">
         <button onClick={() => {
             if (!selected || !selectedDepPrice) return
-            navigate(`/return?depdate=${date}&depprice=${selectedDepPrice}`)
+            navigate(`/return?depdate=${date}&depprice=${selectedDepPrice}&deptime=${selectedDepTime}&depairline=${encodeURIComponent(selectedDepAirline)}`)
           }}
           className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors
             ${selected ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}>

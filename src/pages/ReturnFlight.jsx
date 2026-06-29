@@ -43,6 +43,9 @@ export default function ReturnFlight() {
   const selectedPrice = parseInt(searchParams.get('returnprice') ?? '0', 10)
   const depDate       = parseInt(searchParams.get('depdate') ?? '15', 10)
   const depPrice      = parseInt(searchParams.get('depprice') ?? String(DEPARTURE_PRICE), 10)
+  const depTime       = searchParams.get('deptime') ?? ''
+  const depAirline    = searchParams.get('depairline') ? decodeURIComponent(searchParams.get('depairline')) : '항공'
+  const depDayKo      = DAY_KO[new Date(2026, 5, depDate).getDay()]
   const initReturn    = parseInt(searchParams.get('date') ?? String(depDate), 10)
 
   // 출발일 당일부터 14일치 (당일치기 포함)
@@ -74,7 +77,7 @@ export default function ReturnFlight() {
 
   const handleTransportClick = (type) => {
     const t = data[type]
-    navigate(`/return-list?type=${type}&date=${selectedDate}&depdate=${depDate}&depprice=${depPrice}&count=${t.count}&minprice=${t.price}`)
+    navigate(`/return-list?type=${type}&date=${selectedDate}&depdate=${depDate}&depprice=${depPrice}&deptime=${depTime}&depairline=${encodeURIComponent(depAirline)}&count=${t.count}&minprice=${t.price}`)
   }
 
   return (
@@ -120,7 +123,7 @@ export default function ReturnFlight() {
             <Icon name="check_box" size={24} color="#008026" />
             <div>
               <p className="text-[#008026] text-[16px] font-semibold">출발편 선택 완료</p>
-              <p className="text-[#00e275] text-[14px]">6/{depDate} · ₩{depPrice.toLocaleString()}</p>
+              <p className="text-[#00e275] text-[12px]">6/{depDate}({depDayKo}) · {depAirline} · ₩{depPrice.toLocaleString()}{depTime ? ` · ${depTime}` : ''}</p>
             </div>
           </div>
           <button onClick={() => navigate('/compare')} className="bg-white border border-[#bfd6ee] rounded-[4px] h-[20px] px-[10px] flex items-center">
@@ -217,13 +220,18 @@ export default function ReturnFlight() {
           <div className="bg-white border-2 border-[#f1f2f6] rounded-[8px] py-[12px] flex flex-col gap-[16px]">
             <div className="flex flex-col gap-[10px] px-[20px] text-[14px] font-normal">
               <div className="flex items-center justify-between">
-                <span className="text-[#7d8391]">출발 · 6/{depDate} 항공</span>
+                <span className="text-[#7d8391]">출발 · 6/{depDate}({depDayKo}) · {depAirline}{depTime ? ` · ${depTime}` : ''}</span>
                 <span className="text-[#132968]">₩{depPrice.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#7d8391]">
-                  리턴 · {returnDates.find(d=>d.dateNum===selectedDate)?.month ?? 6}/{returnDates.find(d=>d.dateNum===selectedDate)?.day ?? selectedDate} {TRANSPORT_LABELS[selectedType]}
-                </span>
+                {(() => {
+                  const rd = returnDates.find(d => d.dateNum === selectedDate)
+                  return (
+                    <span className="text-[#7d8391]">
+                      리턴 · {rd?.month ?? 6}/{rd?.day ?? selectedDate}({rd?.dayKo ?? ''}) · {TRANSPORT_LABELS[selectedType]}
+                    </span>
+                  )
+                })()}
                 <span className="text-[#132968]">₩{selectedPrice.toLocaleString()}</span>
               </div>
             </div>
