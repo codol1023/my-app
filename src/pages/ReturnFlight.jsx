@@ -42,6 +42,7 @@ export default function ReturnFlight() {
   const selectedType  = searchParams.get('selected')
   const selectedPrice = parseInt(searchParams.get('returnprice') ?? '0', 10)
   const depDate       = parseInt(searchParams.get('depdate') ?? '15', 10)
+  const depPrice      = parseInt(searchParams.get('depprice') ?? String(DEPARTURE_PRICE), 10)
   const initReturn    = parseInt(searchParams.get('date') ?? String(depDate), 10)
 
   // 출발일 당일부터 14일치 (당일치기 포함)
@@ -57,7 +58,7 @@ export default function ReturnFlight() {
 
   const data = getTransportData(selectedDate)
   const cheapestType = data.flight.price <= data.train.price ? 'flight' : 'train'
-  const totalPrice = DEPARTURE_PRICE + (selectedType ? selectedPrice : 0)
+  const totalPrice = depPrice + (selectedType ? selectedPrice : 0)
   const canProceed = oneway || !!selectedType
 
   const dateScrollRef = useRef(null)
@@ -73,7 +74,7 @@ export default function ReturnFlight() {
 
   const handleTransportClick = (type) => {
     const t = data[type]
-    navigate(`/return-list?type=${type}&date=${selectedDate}&depdate=${depDate}&count=${t.count}&minprice=${t.price}`)
+    navigate(`/return-list?type=${type}&date=${selectedDate}&depdate=${depDate}&depprice=${depPrice}&count=${t.count}&minprice=${t.price}`)
   }
 
   return (
@@ -119,7 +120,7 @@ export default function ReturnFlight() {
             <Icon name="check_box" size={24} color="#008026" />
             <div>
               <p className="text-[#008026] text-[16px] font-semibold">출발편 선택 완료</p>
-              <p className="text-[#00e275] text-[14px]">6/{depDate} · ₩{DEPARTURE_PRICE.toLocaleString()}</p>
+              <p className="text-[#00e275] text-[14px]">6/{depDate} · ₩{depPrice.toLocaleString()}</p>
             </div>
           </div>
           <button onClick={() => navigate('/compare')} className="bg-white border border-[#bfd6ee] rounded-[4px] h-[20px] px-[10px] flex items-center">
@@ -217,7 +218,7 @@ export default function ReturnFlight() {
             <div className="flex flex-col gap-[10px] px-[20px] text-[14px] font-normal">
               <div className="flex items-center justify-between">
                 <span className="text-[#7d8391]">출발 · 6/{depDate} 항공</span>
-                <span className="text-[#132968]">₩{DEPARTURE_PRICE.toLocaleString()}</span>
+                <span className="text-[#132968]">₩{depPrice.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-[#7d8391]">
@@ -242,7 +243,7 @@ export default function ReturnFlight() {
             ${canProceed ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}>
           <span className="text-white text-[14px] font-medium">
             {oneway
-              ? `편도 ₩${DEPARTURE_PRICE.toLocaleString()} · 결제하기`
+              ? `편도 ₩${depPrice.toLocaleString()} · 결제하기`
               : selectedType
                 ? `왕복 ₩${totalPrice.toLocaleString()} · 결제하기`
                 : '리턴편을 선택해주세요'}

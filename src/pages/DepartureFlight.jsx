@@ -131,7 +131,11 @@ export default function DepartureFlight() {
 
       {/* ── 고정 푸터 ── */}
       <div className="flex-shrink-0 px-[16px] pb-[16px] pt-[8px] bg-white border-t border-[#f0f0f0]">
-        <button onClick={() => selected && navigate(`/return?depdate=${date}`)}
+        <button onClick={() => {
+            if (!selected) return
+            const f = flights.find(f => f.id === selected)
+            navigate(`/return?depdate=${date}&depprice=${f.price}`)
+          }}
           className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors
             ${selected ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}>
           <span className="text-white text-[14px] font-medium">

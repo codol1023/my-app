@@ -45,6 +45,8 @@ export default function ReturnFlightList() {
   const [searchParams] = useSearchParams()
   const type     = searchParams.get('type')     ?? 'flight'
   const date     = parseInt(searchParams.get('date')     ?? '29',     10)
+  const depDate  = parseInt(searchParams.get('depdate')  ?? '15',     10)
+  const depPrice = parseInt(searchParams.get('depprice') ?? '79000',  10)
   const count    = parseInt(searchParams.get('count')    ?? '9',      10)
   const minPrice = parseInt(searchParams.get('minprice') ?? '103000', 10)
 
@@ -62,7 +64,7 @@ export default function ReturnFlightList() {
   const handleConfirm = () => {
     if (!selected) return
     const sel = options.find(o => o.id === selected)
-    navigate(`/return?selected=${type}&returnprice=${sel.price}&date=${date}`)
+    navigate(`/return?selected=${type}&returnprice=${sel.price}&date=${date}&depdate=${depDate}&depprice=${depPrice}`)
   }
 
   return (
