@@ -66,7 +66,7 @@ export default function ReturnFlightList() {
   const handleConfirm = () => {
     if (!selected) return
     const sel = options.find(o => o.id === selected)
-    navigate(`/return?selected=${type}&returnprice=${sel.price}&date=${date}&depdate=${depDate}&depprice=${depPrice}&deptime=${depTime}&depairline=${depAirline}`)
+    navigate(`/return?selected=${type}&returnprice=${sel.price}&date=${date}&depdate=${depDate}&depprice=${depPrice}&deptime=${depTime}&depairline=${depAirline}&rettime=${sel.dep}&retairline=${encodeURIComponent(sel.company)}`)
   }
 
   return (

@@ -45,6 +45,8 @@ export default function ReturnFlight() {
   const depPrice      = parseInt(searchParams.get('depprice') ?? String(DEPARTURE_PRICE), 10)
   const depTime       = searchParams.get('deptime') ?? ''
   const depAirline    = searchParams.get('depairline') ? decodeURIComponent(searchParams.get('depairline')) : '항공'
+  const retTime       = searchParams.get('rettime') ?? ''
+  const retAirline    = searchParams.get('retairline') ? decodeURIComponent(searchParams.get('retairline')) : ''
   const depDayKo      = DAY_KO[new Date(2026, 5, depDate).getDay()]
   const initReturn    = parseInt(searchParams.get('date') ?? String(depDate), 10)
 
@@ -228,7 +230,7 @@ export default function ReturnFlight() {
                   const rd = returnDates.find(d => d.dateNum === selectedDate)
                   return (
                     <span className="text-[#7d8391]">
-                      리턴 · {rd?.month ?? 6}/{rd?.day ?? selectedDate}({rd?.dayKo ?? ''}) · {TRANSPORT_LABELS[selectedType]}
+                      리턴 · {rd?.month ?? 6}/{rd?.day ?? selectedDate}({rd?.dayKo ?? ''}) · {retAirline || TRANSPORT_LABELS[selectedType]}{retTime ? ` · ${retTime}` : ''}
                     </span>
                   )
                 })()}
