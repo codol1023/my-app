@@ -46,19 +46,22 @@ export default function ReturnFlight() {
   const selectedType  = searchParams.get('selected')
   const selectedPrice = parseInt(searchParams.get('returnprice') ?? '0', 10)
   const depDate       = parseInt(searchParams.get('depdate') ?? '15', 10)  // 출발일
-  const initReturn    = parseInt(searchParams.get('date') ?? String(depDate + 1), 10)
+  const initReturn    = parseInt(searchParams.get('date') ?? String(depDate), 10)
 
-  // 출발일 다음날부터 14일치 동적 생성
-  const returnDates = Array.from({ length: 14 }, (_, i) => buildDate(depDate + 1 + i))
+  // 출발일 당일부터 14일치 동적 생성 (당일치기 여행자 포함)
+  const returnDates = Array.from({ length: 14 }, (_, i) => buildDate(depDate + i))
 
   const validInit = returnDates.find(d => d.dateNum === initReturn)
   const [selectedDate, setSelectedDate] = useState(
-    validInit ? initReturn : returnDates[0]?.dateNum ?? depDate + 1
+    validInit ? initReturn : returnDates[0]?.dateNum ?? depDate
   )
+
+  const [oneway, setOneway] = useState(false)
 
   const data = getTransportData(selectedDate)
   const cheapestType = data.flight.price <= data.train.price ? 'flight' : 'train'
   const totalPrice = DEPARTURE_PRICE + (selectedType ? selectedPrice : 0)
+  const canProceed = oneway || !!selectedType
 
   // 날짜 슬라이더 자동 스크롤
   const dateScrollRef = useRef(null)
@@ -128,7 +131,16 @@ export default function ReturnFlight() {
           </button>
         </div>
 
+        {/* 편도선택 */}
+        <button
+          onClick={() => setOneway(!oneway)}
+          className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center gap-[8px] px-[16px] w-full">
+          <Icon name={oneway ? 'check_box' : 'check_box_outline_blank'} size={24} color={oneway ? '#008026' : '#6b7281'} />
+          <span className="text-[#132968] text-[14px] font-semibold">편도선택</span>
+        </button>
+
         {/* 리턴편 선택 박스 */}
+        <div className={`transition-all duration-300 overflow-hidden ${oneway ? 'max-h-0 opacity-0' : 'max-h-[700px] opacity-100'}`}>
         <div className="border-2 border-[#132968] rounded-[8px]">
           <div className="bg-[#132968] flex items-center justify-between px-[12px] py-[10px] rounded-tl-[8px] rounded-tr-[8px]">
             <p className="text-white text-[16px] font-semibold">리턴편 선택</p>
@@ -141,7 +153,7 @@ export default function ReturnFlight() {
           <div className="bg-white px-[12px] py-[16px] flex flex-col gap-[16px] rounded-bl-[8px] rounded-br-[8px]">
             {/* 날짜 슬라이더 — 출발일 다음날부터 동적 생성 */}
             <div className="flex flex-col gap-[8px]">
-              <span className="text-[#6b7281] text-[10px]">리턴 날짜 (6/{depDate} 이후)</span>
+              <span className="text-[#6b7281] text-[10px]">리턴 날짜 (6/{depDate} 당일부터)</span>
               <div ref={dateScrollRef} className="overflow-x-auto">
                 <div className="flex gap-[8px] w-max">
                   {returnDates.map((d) => (
@@ -195,9 +207,10 @@ export default function ReturnFlight() {
             </div>
           </div>
         </div>
+        </div>{/* 애니메이션 래퍼 닫기 */}
 
-        {/* 왕복 합계 (선택 후에만) */}
-        {selectedType && (
+        {/* 왕복 합계 (리턴 선택 후, 편도 아닐 때만) */}
+        {selectedType && !oneway && (
           <div className="bg-white border-2 border-[#f1f2f6] rounded-[8px] py-[12px] flex flex-col gap-[16px]">
             <div className="flex flex-col gap-[10px] px-[20px] text-[14px] font-normal">
               <div className="flex items-center justify-between">
@@ -222,11 +235,15 @@ export default function ReturnFlight() {
 
       <div className="flex-shrink-0 px-[16px] pb-[16px] pt-[8px] bg-white border-t border-[#f0f0f0]">
         <button
-          onClick={() => selectedType && alert('예약이 완료되었습니다! 🎉')}
+          onClick={() => canProceed && alert('예약이 완료되었습니다! 🎉')}
           className={`h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors
-            ${selectedType ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}>
+            ${canProceed ? 'bg-[#fa6b6b]' : 'bg-[#ccc]'}`}>
           <span className="text-white text-[14px] font-medium">
-            {selectedType ? `왕복 ₩${totalPrice.toLocaleString()} · 결제하기` : '리턴편을 선택해주세요'}
+            {oneway
+              ? `편도 ₩${DEPARTURE_PRICE.toLocaleString()} · 결제하기`
+              : selectedType
+                ? `왕복 ₩${totalPrice.toLocaleString()} · 결제하기`
+                : '리턴편을 선택해주세요'}
           </span>
         </button>
       </div>

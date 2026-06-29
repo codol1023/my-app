@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import StatusBar from '../components/StatusBar'
 import BottomNav from '../components/BottomNav'
 import Icon from '../components/Icon'
@@ -17,19 +17,29 @@ const JUNE_2026 = [
 
 export default function DateSelect() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { origin, setOrigin, destination, setDestination, passengers, setPassengers, saveSearch } = useTrip()
   const swap = () => { const t = origin; setOrigin(destination); setDestination(t) }
   const [flexDate, setFlexDate] = useState(false)
   const [departDay, setDepartDay] = useState(null)
   const [returnDay, setReturnDay] = useState(null)
   const [selectingReturn, setSelectingReturn] = useState(false)
+  const [roundtrip, setRoundtrip] = useState(searchParams.get('roundtrip') === '1')
 
   const canSearch = !!(origin.trim() && destination.trim() && departDay)
   const handleSearch = () => { if (!canSearch) return; saveSearch(); navigate(`/compare${departDay ? `?date=${departDay}` : ''}`) }
 
+  const enableRoundtrip = () => {
+    setRoundtrip(true)
+    if (departDay) setSelectingReturn(true)
+  }
+
   const handleDayClick = (day) => {
     if (!day) return
-    if (!departDay || !selectingReturn) {
+    if (!roundtrip) {
+      setDepartDay(day)
+      setReturnDay(null)
+    } else if (!departDay || !selectingReturn) {
       setDepartDay(day); setReturnDay(null); setSelectingReturn(true)
     } else {
       if (day > departDay) { setReturnDay(day); setSelectingReturn(false) }
@@ -84,15 +94,25 @@ export default function DateSelect() {
                   {departDay ? `6월 ${departDay}일` : '출발일'}
                 </span>
               </div>
-              <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[10px] flex-1">
-                <div className="flex items-center gap-[8px]">
-                  <Icon name="calendar_month" size={24} color="#6f7584" />
-                  <span className="text-[#6f7584] text-[14px] font-semibold">
-                    {returnDay ? `6월 ${returnDay}일` : '도착일'}
-                  </span>
+              {roundtrip ? (
+                <div className="bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[10px] flex-1">
+                  <div className="flex items-center gap-[8px]">
+                    <Icon name="calendar_month" size={24} color="#6f7584" />
+                    <span className="text-[#6f7584] text-[14px] font-semibold">
+                      {returnDay ? `6월 ${returnDay}일` : '오는 날'}
+                    </span>
+                  </div>
+                  {returnDay && <button onClick={() => { setReturnDay(null); setSelectingReturn(true) }} className="cursor-pointer">
+                    <Icon name="close" size={24} color="#6f7584" />
+                  </button>}
                 </div>
-                <Icon name="close" size={24} color="#6f7584" />
-              </div>
+              ) : (
+                <button onClick={enableRoundtrip}
+                  className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[10px] flex-1 gap-[8px]">
+                  <Icon name="add" size={24} color="#6f7584" />
+                  <span className="text-[#6f7584] text-[14px] font-semibold">+왕복선택</span>
+                </button>
+              )}
             </div>
 
             {/* 유연날짜 토글 */}
@@ -117,7 +137,7 @@ export default function DateSelect() {
               <div className="flex flex-col">
                 <span className="text-[#d5d5d5] text-[12px]">가는 날</span>
                 <span className="text-[#fa6b6b] text-[14px] font-semibold">
-                  {departDay ? `6월 ${departDay}일 선택됨` : '6월 15일 (일) 선택 중...'}
+                  {roundtrip && selectingReturn && departDay ? '오는 날 선택 중...' : departDay ? `6월 ${departDay}일 선택됨` : '가는 날 선택 중...'}
                 </span>
               </div>
             </div>
@@ -157,22 +177,30 @@ export default function DateSelect() {
               ))}
             </div>
 
-            <div className="bg-[#f1f2f6] border-2 border-[#d5d5d5] border-t-0 rounded-bl-[8px] rounded-br-[8px] h-[48px] flex items-center justify-between px-[16px]">
-              <div className="flex items-center gap-[8px]">
-                <Icon name="calendar_month" size={24} color="#6f7584" />
-                <div className="flex flex-col">
-                  <span className="text-[#d5d5d5] text-[12px]">오는 날</span>
-                  <span className="text-[#132968] text-[14px] font-semibold">
-                    {returnDay ? `6월 ${returnDay}일` : '날짜 선택'}
-                  </span>
+            {roundtrip ? (
+              <div className="bg-[#f1f2f6] border-2 border-[#d5d5d5] border-t-0 rounded-bl-[8px] rounded-br-[8px] h-[48px] flex items-center justify-between px-[16px]">
+                <div className="flex items-center gap-[8px]">
+                  <Icon name="calendar_month" size={24} color="#6f7584" />
+                  <div className="flex flex-col">
+                    <span className="text-[#d5d5d5] text-[12px]">오는 날</span>
+                    <span className="text-[#132968] text-[14px] font-semibold">
+                      {returnDay ? `6월 ${returnDay}일` : '날짜 선택'}
+                    </span>
+                  </div>
                 </div>
+                {returnDay && (
+                  <div className="bg-[#fa6b6b] h-[20px] px-[12px] rounded-[4px] flex items-center">
+                    <span className="text-white text-[10px] font-semibold">+14일</span>
+                  </div>
+                )}
               </div>
-              {returnDay && (
-                <div className="bg-[#fa6b6b] h-[20px] px-[12px] rounded-[4px] flex items-center">
-                  <span className="text-white text-[10px] font-semibold">+14일</span>
-                </div>
-              )}
-            </div>
+            ) : (
+              <button onClick={enableRoundtrip}
+                className="cursor-pointer bg-[#f1f2f6] border-2 border-[#d5d5d5] border-t-0 rounded-bl-[8px] rounded-br-[8px] h-[48px] flex items-center px-[16px] gap-[8px] w-full">
+                <Icon name="add" size={24} color="#6f7584" />
+                <span className="text-[#6f7584] text-[14px] font-semibold">+왕복선택</span>
+              </button>
+            )}
           </div>
 
           {/* 인원 — context 연동 */}
@@ -200,7 +228,7 @@ export default function DateSelect() {
         <button onClick={handleSearch}
           className={`cursor-pointer h-[48px] rounded-[8px] flex items-center justify-center w-full transition-colors ${canSearch ? 'bg-[#fa6b6b]' : 'bg-[#ccc] cursor-not-allowed'}`}>
           <span className="text-white text-[14px] font-medium">
-            {departDay ? '검색 Omio' : '날짜를 선택해주세요'}
+            {departDay ? (roundtrip ? (returnDay ? '왕복 검색 Omio' : '편도로 검색 Omio') : '편도로 검색 Omio') : '날짜를 선택해주세요'}
           </span>
         </button>
       </div>

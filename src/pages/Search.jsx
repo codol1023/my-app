@@ -63,12 +63,10 @@ export default function Search() {
                 <Icon name="calendar_month" size={24} color="#6f7584" />
                 <span className="text-[#6f7584] text-[14px] font-semibold">출발일</span>
               </button>
-              <button className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center justify-between px-[10px] flex-1">
-                <div className="flex items-center gap-[8px]">
-                  <Icon name="calendar_month" size={24} color="#6f7584" />
-                  <span className="text-[#6f7584] text-[14px] font-semibold">도착일</span>
-                </div>
-                <Icon name="close" size={24} color="#6f7584" />
+              <button onClick={() => navigate('/date-select?roundtrip=1')}
+                className="cursor-pointer bg-[#f1f2f6] h-[48px] rounded-[8px] flex items-center px-[10px] flex-1 gap-[8px]">
+                <Icon name="add" size={24} color="#6f7584" />
+                <span className="text-[#6f7584] text-[14px] font-semibold">+왕복선택</span>
               </button>
             </div>
 
